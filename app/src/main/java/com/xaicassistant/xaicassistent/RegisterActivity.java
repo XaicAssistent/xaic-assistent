@@ -16,6 +16,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button btn;
     Button btnCompany;
     Button btnUser;
+    Button btnCancel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +25,10 @@ public class RegisterActivity extends AppCompatActivity {
         myDialog = new Dialog(this);
 
                 myDialog.setContentView(R.layout.user_type);
+                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 btnCompany  =(Button) myDialog.findViewById(R.id.btnCompany);
                 btnUser = (Button) myDialog.findViewById(R.id.btnUser);
+                btnCancel = (Button) myDialog.findViewById(R.id.btnCancelar);
                 btnCompany.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -37,6 +40,13 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Log.d("opcion","usuario");
+                        myDialog.dismiss();
+                    }
+                });
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.d("opcion","opceracion cancelada");
                         myDialog.dismiss();
                     }
                 });

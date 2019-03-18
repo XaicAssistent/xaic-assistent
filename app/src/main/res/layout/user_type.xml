@@ -1,65 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="361dp"
-        android:layout_height="291dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="252dp"
-        android:layout_marginEnd="7dp"
-        android:layout_marginBottom="188dp"
-        android:background="@drawable/user_type_background"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        >
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="285dp"
-            android:layout_height="22dp"
-            android:layout_marginLeft="35dp"
-            android:layout_marginTop="30dp"
-            android:fontFamily="sans-serif-smallcaps"
-            android:text="Elige el tipo de usuario que seas"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp">
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:text="Elige el tipo de usuario que seas"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+                <Button
+                    android:id="@+id/btnCompany"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_user_type"
+                    android:text="EMPRESA"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                   />
 
-        <Button
-            android:id="@+id/btnCompany"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/buttons"
-            android:text="EMPRESA"
-            app:layout_constraintBottom_toTopOf="@+id/btnUser"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+                <Button
+                    android:id="@+id/btnUser"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_user_type"
+                    android:text="USUARIO CLIENTE"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                     />
+                <Button
+                    android:id="@+id/btnCancelar"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_cancel_choose_user"
+                    android:text="CANCELAR"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/btnUser"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="46dp"
-            android:layout_marginBottom="5dp"
-            android:background="@drawable/buttons"
-            android:text="USUARIO CLIENTE"
-            app:layout_constraintBottom_toTopOf="@+id/btnUser"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</RelativeLayout>
