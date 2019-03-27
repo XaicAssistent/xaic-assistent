@@ -13,17 +13,18 @@ import android.widget.TextView;
 public class RegisterActivity extends AppCompatActivity {
 
     Dialog myDialog;
-    Button btn;
+    Button btnAddSchedule;
     Button btnCompany;
     Button btnUser;
     Button btnCancel;
+    Dialog dialogSchedule;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        myDialog = new Dialog(this);
-
+        //choose type of user
+                myDialog = new Dialog(this);
                 myDialog.setContentView(R.layout.user_type);
                 myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 btnCompany  =(Button) myDialog.findViewById(R.id.btnCompany);
@@ -50,10 +51,42 @@ public class RegisterActivity extends AppCompatActivity {
                         myDialog.dismiss();
                     }
                 });
-
-                myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 myDialog.show();
+
+                //ADD NEW SCHEDULE
+        dialogSchedule = new Dialog(this);
+        dialogSchedule.setContentView(R.layout.add_schedule);
+        dialogSchedule.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        btnAddSchedule = findViewById(R.id.btnAddSchedule);
+        Button cancel_add_schedule = (Button) dialogSchedule.findViewById(R.id.accept_add_schedule);
+        Button accept_add_schedule = (Button) dialogSchedule.findViewById(R.id.cancel_add_schedule);
+                btnAddSchedule.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {
+
+                        dialogSchedule.show();
+                    }
+                });
+
+
+        cancel_add_schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("opcion","opceracion cancelada");
+                dialogSchedule.dismiss();
             }
+        });
+        accept_add_schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("opcion","opceracion cancelada");
+                dialogSchedule.dismiss();
+            }
+        });
+
+            }
+
+
 
 
 }
