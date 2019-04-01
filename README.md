@@ -1,1 +1,1 @@
-xaic-assistent-android
+xaic-assistent
