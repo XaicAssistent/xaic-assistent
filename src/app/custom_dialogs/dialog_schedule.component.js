@@ -1,0 +1,23 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var modal_dialog_1 = require("nativescript-angular/modal-dialog");
+var DialogContent = /** @class */ (function () {
+    function DialogContent(params) {
+        this.params = params;
+        this.prompt = params.context.promptMsg;
+    }
+    DialogContent.prototype.close = function (result) {
+        this.params.closeCallback(result);
+    };
+    DialogContent = __decorate([
+        core_1.Component({
+            selector: "modal-content",
+            template: "\n    <StackLayout>\n    <StackLayout orientation=\"horizontal\" class=\"border\">\n      <Label text=\"LU\" class=\"days\"></Label>\n      <Label text=\"MA\" class=\"days\"></Label>\n      <Label text=\"MI\" class=\"days\"></Label>\n      <Label text=\"JU\" class=\"days\"></Label>\n      <Label text=\"VI\" class=\"days\"></Label>\n      <Label text=\"SA\" class=\"days\"></Label>\n      <Label text=\"DO\" class=\"days\"></Label>\n    </StackLayout>\n        <Image class=\"add_schedule\" src=\"https://cdn4.iconfinder.com/data/icons/material-design-content-icons/512/add-circle-512.png\"></Image>\n    </StackLayout>\n    ", styles: ["\n    .border{\n        padding:10%;\n    }\n    .add_schedule {\n        width: 20%;\n        height: 20%;\n        align:\n    } \n    .days {\n        text-align:center;\n        height:5%;\n        width:12%;\n        font-size: 18px;\n        border-radius: 25%;\n        border-color:black;\n        border-width: 2px;\n    } "]
+        }),
+        __metadata("design:paramtypes", [modal_dialog_1.ModalDialogParams])
+    ], DialogContent);
+    return DialogContent;
+}());
+exports.DialogContent = DialogContent;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZGlhbG9nX3NjaGVkdWxlLmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbImRpYWxvZ19zY2hlZHVsZS5jb21wb25lbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSxzQ0FBMEM7QUFDMUMsa0VBQXNFO0FBdUN0RTtJQUVJLHVCQUFvQixNQUF5QjtRQUF6QixXQUFNLEdBQU4sTUFBTSxDQUFtQjtRQUN6QyxJQUFJLENBQUMsTUFBTSxHQUFHLE1BQU0sQ0FBQyxPQUFPLENBQUMsU0FBUyxDQUFDO0lBQzNDLENBQUM7SUFFTSw2QkFBSyxHQUFaLFVBQWEsTUFBYztRQUN2QixJQUFJLENBQUMsTUFBTSxDQUFDLGFBQWEsQ0FBQyxNQUFNLENBQUMsQ0FBQztJQUN4QyxDQUFDO0lBUlUsYUFBYTtRQXJDekIsZ0JBQVMsQ0FBQztZQUNQLFFBQVEsRUFBRSxlQUFlO1lBQ3pCLFFBQVEsRUFBRSxvbkJBYVQsRUFBQyxNQUFNLEVBQUMsQ0FBQyw4VUFpQlAsQ0FBRTtTQUdSLENBQUM7eUNBSThCLGdDQUFpQjtPQUZwQyxhQUFhLENBU3pCO0lBQUQsb0JBQUM7Q0FBQSxBQVRELElBU0M7QUFUWSxzQ0FBYSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IENvbXBvbmVudCB9IGZyb20gXCJAYW5ndWxhci9jb3JlXCI7XHJcbmltcG9ydCB7IE1vZGFsRGlhbG9nUGFyYW1zIH0gZnJvbSBcIm5hdGl2ZXNjcmlwdC1hbmd1bGFyL21vZGFsLWRpYWxvZ1wiO1xyXG5cclxuQENvbXBvbmVudCh7XHJcbiAgICBzZWxlY3RvcjogXCJtb2RhbC1jb250ZW50XCIsXHJcbiAgICB0ZW1wbGF0ZTogYFxyXG4gICAgPFN0YWNrTGF5b3V0PlxyXG4gICAgPFN0YWNrTGF5b3V0IG9yaWVudGF0aW9uPVwiaG9yaXpvbnRhbFwiIGNsYXNzPVwiYm9yZGVyXCI+XHJcbiAgICAgIDxMYWJlbCB0ZXh0PVwiTFVcIiBjbGFzcz1cImRheXNcIj48L0xhYmVsPlxyXG4gICAgICA8TGFiZWwgdGV4dD1cIk1BXCIgY2xhc3M9XCJkYXlzXCI+PC9MYWJlbD5cclxuICAgICAgPExhYmVsIHRleHQ9XCJNSVwiIGNsYXNzPVwiZGF5c1wiPjwvTGFiZWw+XHJcbiAgICAgIDxMYWJlbCB0ZXh0PVwiSlVcIiBjbGFzcz1cImRheXNcIj48L0xhYmVsPlxyXG4gICAgICA8TGFiZWwgdGV4dD1cIlZJXCIgY2xhc3M9XCJkYXlzXCI+PC9MYWJlbD5cclxuICAgICAgPExhYmVsIHRleHQ9XCJTQVwiIGNsYXNzPVwiZGF5c1wiPjwvTGFiZWw+XHJcbiAgICAgIDxMYWJlbCB0ZXh0PVwiRE9cIiBjbGFzcz1cImRheXNcIj48L0xhYmVsPlxyXG4gICAgPC9TdGFja0xheW91dD5cclxuICAgICAgICA8SW1hZ2UgY2xhc3M9XCJhZGRfc2NoZWR1bGVcIiBzcmM9XCJodHRwczovL2NkbjQuaWNvbmZpbmRlci5jb20vZGF0YS9pY29ucy9tYXRlcmlhbC1kZXNpZ24tY29udGVudC1pY29ucy81MTIvYWRkLWNpcmNsZS01MTIucG5nXCI+PC9JbWFnZT5cclxuICAgIDwvU3RhY2tMYXlvdXQ+XHJcbiAgICBgLHN0eWxlczpbYFxyXG4gICAgLmJvcmRlcntcclxuICAgICAgICBwYWRkaW5nOjEwJTtcclxuICAgIH1cclxuICAgIC5hZGRfc2NoZWR1bGUge1xyXG4gICAgICAgIHdpZHRoOiAyMCU7XHJcbiAgICAgICAgaGVpZ2h0OiAyMCU7XHJcbiAgICAgICAgYWxpZ246XHJcbiAgICB9IFxyXG4gICAgLmRheXMge1xyXG4gICAgICAgIHRleHQtYWxpZ246Y2VudGVyO1xyXG4gICAgICAgIGhlaWdodDo1JTtcclxuICAgICAgICB3aWR0aDoxMiU7XHJcbiAgICAgICAgZm9udC1zaXplOiAxOHB4O1xyXG4gICAgICAgIGJvcmRlci1yYWRpdXM6IDI1JTtcclxuICAgICAgICBib3JkZXItY29sb3I6YmxhY2s7XHJcbiAgICAgICAgYm9yZGVyLXdpZHRoOiAycHg7XHJcbiAgICB9IGAgXVxyXG4gICBcclxuICBcclxufSlcclxuXHJcbmV4cG9ydCBjbGFzcyBEaWFsb2dDb250ZW50IHtcclxuICAgIHB1YmxpYyBwcm9tcHQ6IHN0cmluZztcclxuICAgIGNvbnN0cnVjdG9yKHByaXZhdGUgcGFyYW1zOiBNb2RhbERpYWxvZ1BhcmFtcykge1xyXG4gICAgICAgIHRoaXMucHJvbXB0ID0gcGFyYW1zLmNvbnRleHQucHJvbXB0TXNnO1xyXG4gICAgfVxyXG5cclxuICAgIHB1YmxpYyBjbG9zZShyZXN1bHQ6IHN0cmluZykge1xyXG4gICAgICAgIHRoaXMucGFyYW1zLmNsb3NlQ2FsbGJhY2socmVzdWx0KTtcclxuICB9XHJcbn0iXX0=

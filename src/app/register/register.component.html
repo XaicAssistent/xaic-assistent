@@ -1,0 +1,19 @@
+<ScrollView orientation="vertical" sdkExampleTitle sdkToggleNavButton>
+<StackLayout>
+    <Label text="USUARIO CLIENTE" class="titleType"></Label>
+    <StackLayout orientation="vertical" class="registerForm"> 
+        <TextField hint="Email" class="field"></TextField>
+        <TextField hint="Nombre" class="field"></TextField>
+        <TextField hint="Apellidos" class="field"></TextField>
+        <TextField hint="Teléfono" class="field"></TextField>
+        <TextField hint="Dirección" class="field"></TextField>
+        <TextField hint="Contraseña" secure="true" class="field"></TextField>
+        <TextField hint="Confirma la contraseña" secure="true" class="field"></TextField>
+    </StackLayout>
+    <StackLayout class="registerSchedule">
+        <Label text="TU HORARIO" class="titleSchedule"></Label>
+        <Button text="AÑADE TUS HORARIOS" (tap)="addSchedule()"></Button>
+    </StackLayout>
+    <Button class="profilePicture" (tap)="openCamera()"></Button>
+    <Button text="CONTINUAR" (tap)="openPopup()"></Button>
+</StackLayout>
