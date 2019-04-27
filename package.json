@@ -24,6 +24,8 @@
     "@angular/router": "~7.2.0",
     "nativescript-angular": "~7.2.1",
     "nativescript-camera": "^4.4.0",
+    "nativescript-feedback": "^1.3.9",
+    "nativescript-loading-indicator": "^2.5.1",
     "nativescript-popup": "^1.5.0",
     "nativescript-theme-core": "~1.0.4",
     "reflect-metadata": "~0.1.12",

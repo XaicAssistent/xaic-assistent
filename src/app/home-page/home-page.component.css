@@ -1,0 +1,97 @@
+.vod-logo {
+  margin-top: 30;
+}
+.reg-log-container {
+  margin-top: 40;
+  padding: 20;
+}
+.reg-active {
+  font-size: 20;
+  color:lightgray;
+  border-bottom-color: rgba(26, 158, 81, 0.644);
+  border-bottom-width: 2;
+  padding-bottom: 10;
+  animation-name: toggle;
+  animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+}
+
+reg-active-input {
+  animation-name: reg_input;
+  animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+.reg-deactive{
+  color:lightgray;
+  font-size: 11;
+  padding-top: 12;
+  animation-name: toggle;
+  animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.1, 0.1, 1.0, 1.0);
+  
+}
+@keyframes toggle {
+	from { opacity: 0;}
+  50% { opacity: 0.5; }
+	to { opacity: 1; }
+}
+@keyframes reg_input {
+	from { background-color: white; }
+	50% { background-color: white; }
+	to { background-color: white; }
+}
+.reg-separator{
+  color:lightgray;
+  font-size: 13;
+  padding-top: 12;
+  padding-left: 20;
+  padding-right: 20;
+  animation-name: toggle;
+  animation-duration: 2s;
+	animation-fill-mode: forwards;
+}
+.form-input {
+  margin-left: 20;
+  margin-right: 20;
+  margin-top: 10;
+  padding: 10;
+  placeholder-color:rgba(207, 207, 207, 0.6);
+  background-color: rgba(241, 241, 241, 0.6);
+  font-size: 14;
+}
+.form-container {
+  margin-top: 15;
+}
+.form-container-submitted {
+  animation-name: login_submitted;
+  animation-duration: 2s;
+	animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+}
+@keyframes login_submitted {
+	from { opacity: 1 }
+  50% { opacity: 0.1 }
+	to { opacity: 1 }
+}
+.form-button {
+  margin: 20;
+  margin-top: 25;
+  border-radius: 200;
+  z-index: 100;
+  background: linear-gradient(to left, #35d485, #068106);
+  color: white;
+}
+.form-label {
+  color:#ccc;
+  margin-top: -5; 
+}
+.login-done {
+  width: 10;
+  height: 10;
+  border-radius: 1000;
+  background-color: #43a574;
+  padding: 10;
+  z-index: 1000000;
+  margin: -50;
+}

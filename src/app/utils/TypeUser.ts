@@ -1,0 +1,4 @@
+enum TypeUser {
+    Empresa,
+    Normal
+}

@@ -1,0 +1,25 @@
+<StackLayout orientation="vertical" class="main">
+    
+	<Image #logo width="25%" class="vod-logo" src="~/app/images/Logo.png"></Image>
+	<StackLayout #circle width="100" height="100" class="login-done" orientation="horizontal"></StackLayout>
+
+    <StackLayout #content>
+        <StackLayout [visibility]="navigating ? 'collapsed' : 'visible'" orientation="horizontal" class="reg-log-container">
+            <Label text="L O G I N" (tap)="setToLogin()" [ngClass]="[isLogin ? 'reg-active' : 'reg-deactive']"></Label>
+            <Label text=" | " class="reg-separator"></Label>
+            <Label text="R E G I S T R A R" (tap)="setToRegister()" [ngClass]="[!isLogin ? 'reg-active' : 'reg-deactive']"></Label>
+        </StackLayout>
+    
+    
+        <StackLayout [visibility]="navigating ? 'collapsed' : 'visible'" orientation="vertical" class="form-container" [ngClass]="[formSubmitted ? 'form-container-submitted' : 'form-container']">
+            <StackLayout #login [visibility]="isLogin ? 'visible' : 'hidden'">
+                <TextField  [(ngModel)]="phoneNumber" hint="Email" class="form-input" textAlignment="center"></TextField>
+                <TextField [(ngModel)]="password" hint="Contraseña" secure="true" class="form-input" textAlignment="center"></TextField>
+            </StackLayout>
+            <ScrollView #register [visibility]="!isLogin ? 'visible' : 'hidden'" height="280">
+                <ns-register></ns-register>
+            </ScrollView>
+            <Button (touch)="onFocus($event)" #btn text="{{loginTxt}}" (tap)="onButtonTap()" class="form-button"></Button>
+        </StackLayout>
+    </StackLayout>
+</StackLayout>
