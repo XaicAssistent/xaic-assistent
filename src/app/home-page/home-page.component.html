@@ -13,8 +13,8 @@
     
         <StackLayout [visibility]="navigating ? 'collapsed' : 'visible'" orientation="vertical" class="form-container" [ngClass]="[formSubmitted ? 'form-container-submitted' : 'form-container']">
             <StackLayout #login [visibility]="isLogin ? 'visible' : 'hidden'">
-                <TextField  [(ngModel)]="phoneNumber" hint="Email" class="form-input" textAlignment="center"></TextField>
-                <TextField [(ngModel)]="password" hint="Contraseña" secure="true" class="form-input" textAlignment="center"></TextField>
+                <TextField  [(ngModel)]="email" hint="Email" class="form-input" textAlignment="center"></TextField>
+                <TextField [(ngModel)]="pass" hint="Contraseña" secure="true" class="form-input" textAlignment="center"></TextField>
             </StackLayout>
             <ScrollView #register [visibility]="!isLogin ? 'visible' : 'hidden'" height="280">
                 <ns-register></ns-register>

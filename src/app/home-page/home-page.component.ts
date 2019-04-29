@@ -2,12 +2,14 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { View, Page } from 'tns-core-modules/ui/page/page';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { TouchGestureEventData } from 'tns-core-modules/ui/gestures/gestures';
+import { UserService } from '../services/UserService';
 
 @Component({
   selector: 'ns-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
   moduleId: module.id,
+  providers: [UserService]
 })
 export class HomePageComponent implements OnInit {
   @ViewChild("register") angularRegister: ElementRef;
@@ -24,14 +26,15 @@ export class HomePageComponent implements OnInit {
   logoItem: View;
   content: View;
 
-  textFieldValue: string = "";
   isLogin = true;
   formSubmitted = false;
   navigating = false;
   loginTxt = "L o g i n";
 
+  email = "";
+  pass = "";
 
-  constructor(private _page: Page, private routerExtensions: RouterExtensions) {
+  constructor(private _page: Page, private _userService: UserService,private routerExtensions: RouterExtensions) {
   }
 
   ngOnInit(): void {
@@ -57,25 +60,38 @@ export class HomePageComponent implements OnInit {
   
   onButtonTap(): void {
     this.formSubmitted = true;
-    setTimeout(() => {
-      this.navigating = true;
-
-      this.logoItem.animate({
-          translate: { x: 0, y: 300 },
-          scale: { x: 1.8, y: 1.8},
-          duration: 400
-      }).then(() => {
-          this.circleItem.translateY = 200;
-          this.circleItem.animate({
+    
+    if(this.isLogin){
+      this._userService.logUser(this.email, this.pass).subscribe(
+        (ok) => {
+          console.log("OK PMV -> ");
+          console.log(ok);
+  
+          this.navigating = true;
+  
+          this.logoItem.animate({
+            translate: { x: 0, y: 300 },
+            scale: { x: 1.8, y: 1.8},
+            duration: 400
+          }).then(() => {
+            this.circleItem.translateY = 200;
+            this.circleItem.animate({
               scale: { x: 15, y: 15 },
               duration: 400,
-          }).then(() => {
-              this.routerExtensions.navigate(["/register"]);
+            }).then(() => {
+              this.routerExtensions.navigateByUrl("register", { clearHistory: true });
               this.formSubmitted = false;
+            });
           });
-      });
-      
-  }, 2500);
+        },
+        (error) => {
+          console.log("ERROR PMV -> ");
+          console.log(error);
+        }
+      );
+    }else{
+      console.log("register");
+    }
   }
 
   onFocus(args: TouchGestureEventData) {
