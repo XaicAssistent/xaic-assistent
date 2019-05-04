@@ -3,6 +3,7 @@ import { View, Page } from 'tns-core-modules/ui/page/page';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { TouchGestureEventData } from 'tns-core-modules/ui/gestures/gestures';
 import { UserService } from '../services/UserService';
+import { FeedBack } from '../utils/FeedBack';
 
 @Component({
   selector: 'ns-home-page',
@@ -64,27 +65,32 @@ export class HomePageComponent implements OnInit {
     if(this.isLogin){
       this._userService.logUser(this.email, this.pass).subscribe(
         (ok) => {
-          console.log("OK PMV -> ");
-          console.log(ok);
+
+          if(ok["token"] !== "null"){
+            //afegir al app settings
+            this.navigating = true;
   
-          this.navigating = true;
-  
-          this.logoItem.animate({
-            translate: { x: 0, y: 300 },
-            scale: { x: 1.8, y: 1.8},
-            duration: 400
-          }).then(() => {
-            this.circleItem.translateY = 200;
-            this.circleItem.animate({
-              scale: { x: 15, y: 15 },
-              duration: 400,
+            this.logoItem.animate({
+              translate: { x: 0, y: 300 },
+              scale: { x: 1.8, y: 1.8},
+              duration: 400
             }).then(() => {
-              this.routerExtensions.navigateByUrl("register", { clearHistory: true });
-              this.formSubmitted = false;
+              this.circleItem.translateY = 200;
+              this.circleItem.animate({
+                scale: { x: 15, y: 15 },
+                duration: 400,
+              }).then(() => {
+                this.routerExtensions.navigateByUrl("register", { clearHistory: true });
+                this.formSubmitted = false;
+              });
             });
-          });
+          }else{
+            this.formSubmitted = false;
+            FeedBack.feedBackError(ok["errorMesage"]);
+          }
         },
         (error) => {
+          FeedBack.feedBackError("Error de conexión...");
           console.log("ERROR PMV -> ");
           console.log(error);
         }

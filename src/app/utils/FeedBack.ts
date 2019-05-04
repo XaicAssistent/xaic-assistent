@@ -1,4 +1,4 @@
-import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
+import { Feedback } from "nativescript-feedback";
 import { Color } from "tns-core-modules/color";
 
 export class FeedBack{
