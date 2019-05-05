@@ -1,4 +1,4 @@
-import { Periodo } from "./Perido";
+import { TypeUser } from "../utils/TypeUser";
 
 export class UserData{
     idUser: string;
@@ -12,9 +12,7 @@ export class UserData{
     foto: string;
     tipoUsuario: TypeUser;
     pass: string;
-    periodos: Periodo[];
 
     constructor(){
-
     }
 }

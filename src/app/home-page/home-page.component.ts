@@ -4,6 +4,9 @@ import { RouterExtensions } from 'nativescript-angular/router';
 import { TouchGestureEventData } from 'tns-core-modules/ui/gestures/gestures';
 import { UserService } from '../services/UserService';
 import { FeedBack } from '../utils/FeedBack';
+import * as dialogs from "tns-core-modules/ui/dialogs";
+import { TypeUser } from '../utils/TypeUser';
+import { UserData } from '../model/UserData';
 
 @Component({
   selector: 'ns-home-page',
@@ -32,6 +35,15 @@ export class HomePageComponent implements OnInit {
   navigating = false;
   loginTxt = "L o g i n";
 
+  tipoUsuario: TypeUser;
+
+  userData: UserData = new UserData();
+
+  enumTipoUsuario = TypeUser;
+
+  public selectedIndex = 1;
+  public items: Array<string> = ["Si", "No"];
+
   email = "";
   pass = "";
 
@@ -59,7 +71,19 @@ export class HomePageComponent implements OnInit {
     this.btnItem.translateY = -280;
   }
   
-  onButtonTap(): void {
+  choseTypeUser(){
+    dialogs.action({
+      message: "Tipo de usuario",
+      actions: Object.keys(TypeUser)
+    }).then(result => {
+      this.tipoUsuario = TypeUser[result];
+     });
+  }
+
+  choseCategory(){
+  }
+
+  onButtonTap(){
     this.formSubmitted = true;
     
     if(this.isLogin){
@@ -102,11 +126,15 @@ export class HomePageComponent implements OnInit {
 
   onFocus(args: TouchGestureEventData) {
     if (args.action == "down") {
-        this.btnItem.scaleX = 0.9;
-        this.btnItem.scaleY = 0.9;
+      args.view.scaleX = 0.9;
+      args.view.scaleY = 0.9;
+      /*this.btnItem.scaleX = 0.9;
+      this.btnItem.scaleY = 0.9;*/
     } else if (args.action == "up") {
-        this.btnItem.scaleX = 1;
-        this.btnItem.scaleY = 1;
+      args.view.scaleX = 1;
+      args.view.scaleY = 1 ;
+      /*this.btnItem.scaleX = 1;
+      this.btnItem.scaleY = 1;*/
     }
   }
 

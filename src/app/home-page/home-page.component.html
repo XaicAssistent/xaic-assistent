@@ -1,5 +1,4 @@
 <StackLayout orientation="vertical" class="main">
-    
 	<Image #logo width="25%" class="vod-logo" src="~/app/images/Logo.png"></Image>
 	<StackLayout #circle width="100" height="100" class="login-done" orientation="horizontal"></StackLayout>
 
@@ -17,7 +16,32 @@
                 <TextField [(ngModel)]="pass" hint="Contraseña" secure="true" class="form-input" textAlignment="center"></TextField>
             </StackLayout>
             <ScrollView #register [visibility]="!isLogin ? 'visible' : 'hidden'" height="280">
-                <ns-register></ns-register>
+                <StackLayout orientation="vertical" class="registerForm"> 
+                    <label text="Datos básicos" class="titleType"></label>
+                    <TextField hint="Email" [(ngModel)]="userData.gmail" class="form-input"></TextField>
+                    <TextField hint="Nombre" [(ngModel)]="userData.nombre" class="form-input"></TextField>
+                    <TextField hint="Apellidos" [(ngModel)]="userData.apellidos" class="form-input"></TextField>
+                    <TextField hint="Teléfono" [(ngModel)]="userData.telefono" class="form-input"></TextField>
+                    <TextField hint="Dirección" [(ngModel)]="userData.direccion" class="form-input"></TextField>
+                    <TextField hint="Contraseña" [(ngModel)]="userData.pass" secure="true" class="form-input"></TextField>
+                    <TextField hint="Confirma la contraseña" secure="true" class="form-input"></TextField>
+                    <Button class="profilePicture" (tap)="openCamera()"></Button>
+                    <Button (touch)="onFocus($event)" [text]="tipoUsuario == undefined ? 'Elige el tipo de usuario' : tipoUsuario" (tap)="choseTypeUser()" class="tipo-user-button"></Button>
+                    <StackLayout [visibility]="tipoUsuario == enumTipoUsuario.Normal ? 'visible' : 'collapsed'">
+                        <label class="etiqueta-campo" text="Tu fecha de nacimiento" verticalAlignment="center"></label>
+                        <DatePicker verticalAlignment="center"></DatePicker>
+                        <TextField hint="Alergias" class="form-input"></TextField>
+                    </StackLayout>
+                    <StackLayout [visibility]="tipoUsuario == enumTipoUsuario.Empresa ? 'visible' : 'collapsed'">
+                        <label class="etiqueta-campo" text="¿Tu trabajo admite desplazamientos?"></label>
+                        <DropDown #dd
+                            [items]="items"
+                            [(ngModel)]="selectedIndex"
+                            class="si-no"
+                        ></DropDown>
+                        <Button (touch)="onFocus($event)" text="Escoje tu categoria" (tap)="choseCategory()" class="tipo-user-button"></Button>
+                    </StackLayout>
+                </StackLayout>
             </ScrollView>
             <Button (touch)="onFocus($event)" #btn text="{{loginTxt}}" (tap)="onButtonTap()" class="form-button"></Button>
         </StackLayout>

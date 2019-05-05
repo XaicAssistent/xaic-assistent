@@ -3,7 +3,6 @@ import { Popup,PopupOptions } from 'nativescript-popup';
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import * as camera from "nativescript-camera";
 import { ImageSource, fromBase64 } from "tns-core-modules/image-source/image-source";
-import { DialogContent } from '../custom_dialogs/dialog_schedule.component';
 import { ModalDialogOptions, ModalDialogService } from 'nativescript-angular/modal-dialog';
 @Component({
   selector: 'ns-register',
@@ -38,7 +37,6 @@ base64;
     let options: ModalDialogOptions = {
       viewContainerRef: this.viewContainerRef
     };
-    this.modalDialogService.showModal(DialogContent,options);
   }
 
   openCamera(){

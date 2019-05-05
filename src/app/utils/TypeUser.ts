@@ -1,4 +1,4 @@
-enum TypeUser {
-    Empresa,
-    Normal
+export enum TypeUser {
+    Empresa = "empresa",
+    Normal = "normal"
 }
