@@ -29,6 +29,7 @@
     "nativescript-loading-indicator": "^2.5.1",
     "nativescript-popup": "^1.5.0",
     "nativescript-theme-core": "~1.0.4",
+    "nativescript-ui-sidedrawer": "^6.0.0",
     "reflect-metadata": "~0.1.12",
     "rxjs": "~6.3.0",
     "tns-core-modules": "~5.2.0",

@@ -79,7 +79,7 @@ export class HomePageComponent implements OnInit {
               scale: { x: 15, y: 15 },
               duration: 400,
             }).then(() => {
-              this.routerExtensions.navigateByUrl("register", { clearHistory: true });
+              this.routerExtensions.navigateByUrl("menu", { clearHistory: true });
               this.formSubmitted = false;
             });
           });

@@ -13,6 +13,8 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
 
 // Uncomment and add to NgModule imports if you need to use the HttpClient wrapper
 import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
+import { MenuComponent } from "./menu/menu.component";
+import {NativeScriptUISideDrawerModule} from "nativescript-ui-sidedrawer/angular";
 
 @NgModule({
     bootstrap: [
@@ -23,7 +25,8 @@ import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
         AppRoutingModule,
         NativeScriptFormsModule,
         HttpModule,
-        NativeScriptHttpClientModule
+        NativeScriptHttpClientModule,
+        NativeScriptUISideDrawerModule
     ],
     entryComponents:[
         DialogContent
@@ -32,7 +35,8 @@ import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
         AppComponent,
         RegisterComponent,
         DialogContent,
-        HomePageComponent
+        HomePageComponent,
+        MenuComponent
     ],
     providers: [],
     schemas: [

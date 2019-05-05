@@ -2,6 +2,7 @@
 import { platformNativeScriptDynamic } from "nativescript-angular/platform";
 
 import { AppModule } from "./app/app.module";
+import { enableProdMode } from "@angular/core";
 
 // A traditional NativeScript application starts by initializing global objects,
 // setting up global CSS rules, creating, and navigating to the main page.
@@ -10,4 +11,5 @@ import { AppModule } from "./app/app.module";
 // A NativeScript Angular app needs to make both paradigms work together,
 // so we provide a wrapper platform object, platformNativeScriptDynamic,
 // that sets up a NativeScript application and can bootstrap the Angular framework.
+enableProdMode();
 platformNativeScriptDynamic().bootstrapModule(AppModule);
