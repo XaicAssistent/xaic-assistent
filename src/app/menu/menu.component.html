@@ -1,47 +1,46 @@
 <RadSideDrawer [drawerTransition]="sideDrawerTransition">
-        <GridLayout tkDrawerContent rows="auto, *" class="sidedrawer sidedrawer-left">
-            <StackLayout row="0" class="sidedrawer-header">
-                <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
-                <Label class="sidedrawer-header-brand" text="User Name"></Label>
-                <Label class="footnote" text="username@gmail.com"></Label>
+    <GridLayout tkDrawerContent rows="auto, *" class="sidedrawer sidedrawer-left">
+        <StackLayout row="0" class="sidedrawer-header">
+            <Image src="https://placem.at/people?random=11&w=500&h=500&txt=0" class="sidedrawer-header-image fa">
+            </Image>
+            <Label class="sidedrawer-header-brand" text="User Name"></Label>
+            <Label class="footnote" text="username@gmail.com"></Label>
+        </StackLayout>
+
+        <ScrollView row="1">
+            <StackLayout class="sidedrawer-content">
+                <GridLayout columns="auto, *" class="sidedrawer-list-item">
+                    <Image src="~/app/images/home.png" class="fa"></Image>
+                    <Label col="1" text="Home" class="p-r-10"></Label>
+                </GridLayout>
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item">
+                    <Label col="0" text="&#xf1ea;" class="fa"></Label>
+                    <Label col="1" text="Your day" class="p-r-10"></Label>
+                </GridLayout>
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item">
+                    <Label col="0" text="&#xf002;" class="fa"></Label>
+                    <Label col="1" text="Search" class="p-r-10"></Label>
+                </GridLayout>
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item">
+                    <Label col="0" text="&#xf005;" class="fa"></Label>
+                    <Label col="1" text="Featured" class="p-r-10"></Label>
+                </GridLayout>
+
+                <StackLayout class="hr-light"></StackLayout>
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item">
+                    <Label col="0" text="&#xf013;" class="fa"></Label>
+                    <Label col="1" text="Settings" class="p-r-10"></Label>
+                </GridLayout>
             </StackLayout>
-    
-            <ScrollView row="1">
-                <StackLayout class="sidedrawer-content">
-                    <GridLayout columns="auto, *" class="sidedrawer-list-item">
-                        <Label col="0" text="&#xf015;" class="fa"></Label>
-                        <Label col="1" text="Home" class="p-r-10"></Label>
-                    </GridLayout>
-    
-                    <GridLayout columns="auto, *" class="sidedrawer-list-item">
-                        <Label col="0" text="&#xf1ea;" class="fa"></Label>
-                        <Label col="1" text="Browse" class="p-r-10"></Label>
-                    </GridLayout>
-    
-                    <GridLayout columns="auto, *" class="sidedrawer-list-item">
-                        <Label col="0" text="&#xf002;" class="fa"></Label>
-                        <Label col="1" text="Search" class="p-r-10"></Label>
-                    </GridLayout>
-    
-                    <GridLayout columns="auto, *" class="sidedrawer-list-item">
-                        <Label col="0" text="&#xf005;" class="fa"></Label>
-                        <Label col="1" text="Featured" class="p-r-10"></Label>
-                    </GridLayout>
-    
-                    <StackLayout class="hr-light"></StackLayout>
-    
-                    <GridLayout columns="auto, *" class="sidedrawer-list-item">
-                        <Label col="0" text="&#xf013;" class="fa"></Label>
-                        <Label col="1" text="Settings" class="p-r-10"></Label>
-                    </GridLayout>
-                </StackLayout>
-            </ScrollView>
-        </GridLayout>
-        <ActionBar title="RadSideDrawer" class="action-bar">
-                <ActionItem>
-                    <StackLayout>
-                        <Button class="fa" text="&#xf0c9;" fontSize="20" (tap)="openDrawer()"></Button>
-                    </StackLayout>
-                </ActionItem>
-            </ActionBar>
-    </RadSideDrawer>
+        </ScrollView>
+    </GridLayout>
+    <ActionBar title="Xaic Assistant" position="center" class="action-bar">
+        <ActionItem android.position="left">
+                <Button class="opener" fontSize="20" (tap)="openDrawer()"></Button>
+        </ActionItem>
+    </ActionBar>
+</RadSideDrawer>

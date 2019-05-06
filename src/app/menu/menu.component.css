@@ -3,6 +3,17 @@
     font-family: "FontAwesome";
 }
 
+.opener{
+    background: url("~/app/images/opener.png");
+    background-repeat: no-repeat;
+}
+
+.action-bar {
+    background-color: rgba(26, 158, 81, 0.644);
+    color: white; 
+    text-align: center;
+}
+
 .page-content .page-placeholder {
     color: #D7D7D7;
     font-size: 20;
@@ -24,7 +35,7 @@
     color: #022734;
 }
 .sidedrawer.sidedrawer-left {
-    background-color: #3A53FF;
+    background-color:rgba(26, 158, 81, 0.644);
 }
 .sidedrawer.sidedrawer-left .sidedrawer-header-image {
     color: #F8F8F8;
@@ -36,10 +47,10 @@
     margin-top: 20;
 }
 .sidedrawer.sidedrawer-left .footnote {
-    color: rgba(255,255,255,0.5);
+    color: #fff;
 }
 .sidedrawer .sidedrawer-header {
-    background-color: #3A53FF;
+    background-color: rgba(26, 158, 81, 0.644);
 }
 .sidedrawer .sidedrawer-header .sidedrawer-header-brand {
     color: #fff;
@@ -65,12 +76,3 @@
     color:#3A53FF;
 }
  
-
-.fab-button{
-    height:70;
-    width: 70;
-    margin: 15;
-    background-color: #ff4081;
-    horizontal-align: right;
-    vertical-align: bottom;
-}
