@@ -1,8 +1,10 @@
-<StackLayout orientation="vertical" class="main">
-	<Image #logo width="25%" class="vod-logo" src="~/app/images/Logo.png"></Image>
-	<StackLayout #circle width="100" height="100" class="login-done" orientation="horizontal"></StackLayout>
-
-    <StackLayout #content>
+<StackLayout  orientation="vertical" class="main">
+    <StackLayout [visibility]="!isLogin ? 'collapsed' : 'visible'">
+        <Image width="25%" #logo class="vod-logo" src="~/app/images/Logo.png"></Image>
+        <StackLayout #circle width="100" height="100" class="login-done" orientation="horizontal"></StackLayout>
+    </StackLayout>
+    
+    <StackLayout #content height="100%">
         <StackLayout [visibility]="navigating ? 'collapsed' : 'visible'" orientation="horizontal" class="reg-log-container">
             <Label text="L O G I N" (tap)="setToLogin()" [ngClass]="[isLogin ? 'reg-active' : 'reg-deactive']"></Label>
             <Label text=" | " class="reg-separator"></Label>
@@ -11,11 +13,11 @@
     
     
         <StackLayout [visibility]="navigating ? 'collapsed' : 'visible'" orientation="vertical" class="form-container" [ngClass]="[formSubmitted ? 'form-container-submitted' : 'form-container']">
-            <StackLayout #login [visibility]="isLogin ? 'visible' : 'hidden'">
+            <StackLayout #login [visibility]="isLogin ? 'visible' : 'collapsed'">
                 <TextField  [(ngModel)]="email" hint="Email" class="form-input" textAlignment="center"></TextField>
                 <TextField [(ngModel)]="pass" hint="Contraseña" secure="true" class="form-input" textAlignment="center"></TextField>
             </StackLayout>
-            <ScrollView #register [visibility]="!isLogin ? 'visible' : 'hidden'" height="280">
+            <ScrollView #register [visibility]="!isLogin ? 'visible' : 'collapsed'" height="77%">
                 <StackLayout orientation="vertical" class="registerForm"> 
                     <label text="Datos básicos" class="titleType"></label>
                     <TextField hint="Email" [(ngModel)]="userData.gmail" class="form-input"></TextField>
@@ -34,16 +36,45 @@
                     </StackLayout>
                     <StackLayout [visibility]="tipoUsuario == enumTipoUsuario.Empresa ? 'visible' : 'collapsed'">
                         <label class="etiqueta-campo" text="¿Tu trabajo admite desplazamientos?"></label>
-                        <DropDown #dd
+                        <DropDown
                             [items]="items"
                             [(ngModel)]="selectedIndex"
-                            class="si-no"
+                            class="dropDown"
                         ></DropDown>
-                        <Button (touch)="onFocus($event)" text="Escoje tu categoria" (tap)="choseCategory()" class="tipo-user-button"></Button>
+                        <Button (touch)="onFocus($event)" [text]="selectedCategory == 0 ? 'Escoje tu categoria' : categorys[selectedCategory - 1].nombre" (tap)="choseCategory()" class="tipo-user-button"></Button>
                     </StackLayout>
                 </StackLayout>
             </ScrollView>
             <Button (touch)="onFocus($event)" #btn text="{{loginTxt}}" (tap)="onButtonTap()" class="form-button"></Button>
         </StackLayout>
+    </StackLayout>
+</StackLayout>
+
+<StackLayout style.zIndex="999" #modalChoseCategory modal size="md" alignment="middle" dismissable="true" duration="100">
+    <StackLayout borderRadius="3" rows="*, auto" class="p-t-15 bg-white">
+
+        <DropDown
+            [items]="categorysNames"
+            [(ngModel)]="selectedCategory"
+            class="dropDown"
+        ></DropDown>
+        <Button (touch)="onFocus($event)" text="Aceptar" (tap)="selectedNewCategory()" class="tipo-user-button"></Button>
+        <Button (touch)="onFocus($event)" text="Nueva categoría" (tap)="modalNewCategory.show()" class="tipo-user-button"></Button>
+
+        <WrapLayout class="m-y-2 m-r-15 pull-right">
+            <Label (tap)="closeModal($event)" text="CANCEL" class="m-y-10 p-10 text-cancel"></Label>
+        </WrapLayout>
+    </StackLayout>
+</StackLayout>
+
+<StackLayout style.zIndex="999" #modalNewCategory modal size="md" alignment="middle" dismissable="true" duration="100">
+    <StackLayout borderRadius="3" rows="*, auto" class="p-t-15 bg-white">
+
+        <TextField hint="Nombre de la categoria" [(ngModel)]="newCategory.nombre" class="form-input"></TextField>
+        <Button (touch)="onFocus($event)" text="Añadir" (tap)="addCategory()" class="tipo-user-button"></Button>
+
+        <WrapLayout class="m-y-2 m-r-15 pull-right">
+            <Label (tap)="closeModal($event)" text="Cancelar" class="m-y-10 p-10 text-cancel"></Label>
+        </WrapLayout>
     </StackLayout>
 </StackLayout>

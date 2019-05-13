@@ -8,11 +8,14 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { HttpModule } from "@angular/http";
 import { DropDownModule } from "nativescript-drop-down/angular";
 
+import { NativeScriptCommonModule } from "nativescript-angular/common";
+
 // Uncomment and add to NgModule imports if you need to use two-way binding
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 
 // Uncomment and add to NgModule imports if you need to use the HttpClient wrapper
 import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
+import { ModalComponent } from "./modal";
 
 @NgModule({
     bootstrap: [
@@ -25,11 +28,14 @@ import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
         HttpModule,
         NativeScriptHttpClientModule,
         DropDownModule,
+        NativeScriptCommonModule,
+        NativeScriptFormsModule
     ],
     declarations: [
         AppComponent,
         RegisterComponent,
-        HomePageComponent
+        HomePageComponent,
+        ModalComponent
     ],
     providers: [],
     schemas: [

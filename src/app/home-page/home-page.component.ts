@@ -7,13 +7,16 @@ import { FeedBack } from '../utils/FeedBack';
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { TypeUser } from '../utils/TypeUser';
 import { UserData } from '../model/UserData';
+import { ModalComponent } from '../modal';
+import { CategoryService } from '../services/CategoryService';
+import { Category } from '../model/Category';
 
 @Component({
   selector: 'ns-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
   moduleId: module.id,
-  providers: [UserService]
+  providers: [UserService, CategoryService]
 })
 export class HomePageComponent implements OnInit {
   @ViewChild("register") angularRegister: ElementRef;
@@ -22,7 +25,9 @@ export class HomePageComponent implements OnInit {
   @ViewChild("logo") logoRef: ElementRef;
   @ViewChild("login") angularLogin: ElementRef;
   @ViewChild("content") angularContent: ElementRef;
-  
+  @ViewChild("modalNewCategory") modalNewCategory: ModalComponent;
+  @ViewChild("modalChoseCategory") modalChoseCategory: ModalComponent;
+
   loginLayout: View;
   regsiterLayout: View;
   btnItem: View;
@@ -41,13 +46,18 @@ export class HomePageComponent implements OnInit {
 
   enumTipoUsuario = TypeUser;
 
-  public selectedIndex = 1;
-  public items: Array<string> = ["Si", "No"];
+  selectedIndex = 0;
+  selectedCategory = 0;
+  items: Array<string> = ["Si", "No"];
+  categorysNames: Array<string> = [];
+  categorys: Category[] = [];
 
   email = "";
   pass = "";
 
-  constructor(private _page: Page, private _userService: UserService,private routerExtensions: RouterExtensions) {
+  newCategory: Category = new Category();
+
+  constructor(private _page: Page, private _userService: UserService, private _categoryService: CategoryService,private routerExtensions: RouterExtensions) {
   }
 
   ngOnInit(): void {
@@ -68,7 +78,6 @@ export class HomePageComponent implements OnInit {
     this.regsiterLayout.scaleX = 0;
     this.circleItem.scaleX = 0;
     this.circleItem.scaleY = 0;
-    this.btnItem.translateY = -280;
   }
   
   choseTypeUser(){
@@ -80,7 +89,35 @@ export class HomePageComponent implements OnInit {
      });
   }
 
-  choseCategory(){
+  choseCategory(modal : ModalComponent){
+    this._categoryService.getCategorys().subscribe(
+      (ok) => {
+        this.categorysNames = [];
+        this.categorys = [];
+        this.categorysNames.push("Categoria sin definir");
+        ok["categorys"].forEach((cat) => {
+          let category: Category = new Category();
+          category.idCategory = cat.IdCategory;
+          category.nombre = cat.Nombre;
+          this.categorys.push(category);
+          this.categorysNames.push(category.nombre);
+        });
+        this.modalChoseCategory.show();
+      },
+      (error) => {
+        FeedBack.feedBackError("Error de conexión...");
+        console.log("ERROR PMV -> ");
+        console.log(error);
+      }
+    );
+  }
+
+  selectedNewCategory(){
+    console.log(this.categorys[this.selectedCategory - 1]);
+  }
+
+  closeModal(modal : ModalComponent) {
+    modal.hide;
   }
 
   onButtonTap(){
@@ -124,17 +161,26 @@ export class HomePageComponent implements OnInit {
     }
   }
 
+  addCategory(){
+    this._categoryService.addCategory(this.newCategory).subscribe(
+      (ok) => {
+        console.log(ok);
+      },
+      (error) => {
+        FeedBack.feedBackError("Error de conexión...");
+        console.log("ERROR PMV -> ");
+        console.log(error);
+      }
+    );
+  }
+
   onFocus(args: TouchGestureEventData) {
     if (args.action == "down") {
       args.view.scaleX = 0.9;
       args.view.scaleY = 0.9;
-      /*this.btnItem.scaleX = 0.9;
-      this.btnItem.scaleY = 0.9;*/
     } else if (args.action == "up") {
       args.view.scaleX = 1;
       args.view.scaleY = 1 ;
-      /*this.btnItem.scaleX = 1;
-      this.btnItem.scaleY = 1;*/
     }
   }
 
@@ -143,18 +189,18 @@ export class HomePageComponent implements OnInit {
       translate: { x: 0, y: 0 }, 
       duration: 150
     }).then(() => {
+      this.isLogin = true;
+      this.loginTxt = "L o g i n";
       this.logoItem.animate({
         scale: { x: 1, y: 1 },
-        duration: 100
+        duration: 150
       }).then(() => {
         this.regsiterLayout.animate({
           scale: { x: 0, y: 0 },
           duration: 300
         }).then(() => {
-            this.isLogin = true;
-            this.loginTxt = "L o g i n";
             this.btnItem.animate({
-                translate: { x: 0, y: -280 },
+                translate: { x: 0, y: 0 },
                 duration: 200
             }).then(() => {
               this.loginLayout.animate({ scale: { x: 1, y: 1 }, duration: 200 })
@@ -165,28 +211,20 @@ export class HomePageComponent implements OnInit {
   }
 
   setToRegister() {
-    this.isLogin = false;
-    this.loginTxt = "R e g i s t r a r";
-
     this.logoItem.animate({
       scale: { x: 0, y: 0 },
       duration: 150
     }).then(() => {
-      this.content.animate({
-        translate: { x: 0, y: -160 }, 
-        duration: 100
+      this.regsiterLayout.animate({
+        scale: { x: 1, y: 1 },
+        duration: 150
       }).then(() => {
-        this.btnItem.animate({
-          translate: { x: 0, y: 0 },
+        this.content.animate({
+          translate: {x: 0, y: -35},
           duration: 200
-        }).then(() => {
-            this.regsiterLayout.animate({
-              scale: { x: 1.3, y: 1.3 },
-              duration: 200
-            }).then(() => {
-              this.regsiterLayout.animate({ scale: { x: 1, y: 1 }, translate: { x: 0, y: -100 }, duration: 200 })
-            });
         });
+        this.isLogin = false;
+        this.loginTxt = "R e g i s t r a r";
       });
     });
   }

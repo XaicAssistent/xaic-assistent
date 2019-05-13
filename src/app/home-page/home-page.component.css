@@ -117,11 +117,11 @@ reg-active-input {
   padding-bottom: 3%; 
 }
 
-.si-no{
+dropDown{
   text-align: center;
-  font-size: 17;
+  font-size: 19;
   padding-bottom: 3; 
-  width: 50%;
+  width: 60%;
 }
 
 .profilePicture{
@@ -134,4 +134,13 @@ reg-active-input {
   background-repeat: no-repeat;
   background-position: center;
   margin-top: 20;
+}
+
+.bg-white {
+  background-color: #ffffff;
+  color: #777777;
+}
+
+.text-cancel{
+  color: rgba(26, 158, 81, 0.644);
 }

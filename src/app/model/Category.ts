@@ -1,6 +1,6 @@
 export class Category{
     idCategory: string;
-    name: string; 
+    nombre: string; 
 
     constructor(){
     }
