@@ -4,14 +4,16 @@
 }
 
 .opener{
-    background: url("~/app/images/opener.png");
-    background-repeat: no-repeat;
+background: url("~/app/images/opener.png");
+background-repeat: no-repeat;
+margin-left: 2%;
+margin-top: 45%;
 }
 
-.action-bar {
-    background-color: rgba(26, 158, 81, 0.644);
-    color: white; 
-    text-align: center;
+.header-home{
+    width: 100%;
+    height: 8%;
+
 }
 
 .page-content .page-placeholder {
@@ -35,7 +37,7 @@
     color: #022734;
 }
 .sidedrawer.sidedrawer-left {
-    background-color:rgba(26, 158, 81, 0.644);
+    background-color:#1a9e51;
 }
 .sidedrawer.sidedrawer-left .sidedrawer-header-image {
     color: #F8F8F8;
@@ -50,7 +52,7 @@
     color: #fff;
 }
 .sidedrawer .sidedrawer-header {
-    background-color: rgba(26, 158, 81, 0.644);
+    background-color: rgba(26, 158, 81, 1);
 }
 .sidedrawer .sidedrawer-header .sidedrawer-header-brand {
     color: #fff;
