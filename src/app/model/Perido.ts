@@ -1,5 +1,7 @@
+import { DaysEnum } from "../utils/DaysEnum";
+
 export class Periodo{
-    dia: string;
+    dia: DaysEnum;
     empieza: any;
     acaba: any;
 

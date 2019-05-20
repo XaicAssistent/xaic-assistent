@@ -59,7 +59,7 @@ let targetHandler2 = null;
 		<GridLayout (loaded)="onLoad($event)" (tap)="onTapHide()" [translateY]="translateY" opacity="0" class="overlay">
 			<GridLayout #bodyEl [verticalAlignment]="vAlignment" [width]="modalWidth" [height]="modalHeight" [translateY]="translateY" scaleY=".6" scaleX=".6" opacity="0"
 			class="overlay-body">
-				<StackLayout #contentEl class="overlay-content">
+				<StackLayout #contentEl (tap)="onTapNoHide()" class="overlay-content">
 					<ng-content></ng-content>
 				</StackLayout>
 			</GridLayout>
@@ -69,7 +69,7 @@ let targetHandler2 = null;
 		.overlay {
 			background-color: rgba(0, 0, 0, 0.8);
 			z-index: 999999;
-		}
+        }
 		.overlay .overlay-body { }
 		.overlay .overlay-body .overlay-content {
 			vertical-align: center;
@@ -82,6 +82,7 @@ let targetHandler2 = null;
 })
 
 export class ModalComponent implements OnInit {
+    private noSeEsconde: boolean = false;
     private isShowing: boolean = false;
     private pageHeight: number;
     private durationScale: number = .75;
@@ -170,9 +171,15 @@ export class ModalComponent implements OnInit {
     }
 
     onTapHide = () => {
+        if(this.noSeEsconde) return;
         if (isAndroid && this.dismissable) {
             this.hide();
         }
+    }
+
+    onTapNoHide = () => {
+        this.noSeEsconde = true;
+        setTimeout(() => this.noSeEsconde = false, 20);
     }
 
     onLoad({ object }) {

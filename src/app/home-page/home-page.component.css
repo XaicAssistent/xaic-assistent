@@ -91,6 +91,21 @@ reg-active-input {
   color: white;
 }
 
+.add-button{
+  width: 15%;
+  margin-left: 80%;
+  margin-right: 10%;
+  border-radius: 200;
+}
+
+.dia{
+  padding: 10;
+  border-width: 1;
+  margin: 4;
+  border: #777777;
+  border-radius: 200;
+}
+
 .form-label {
   color:#ccc;
   margin-top: -5; 
@@ -144,3 +159,14 @@ dropDown{
 .text-cancel{
   color: rgba(26, 158, 81, 0.644);
 }
+
+.selected-dia{
+  background-color: rgba(26, 158, 81, 0.644);
+}
+
+.ico {
+  font-family: icomoon, icomoon;
+  font-weight: 400; 
+}
+
+    /*url('../../fonts/icomoon.ttf') format('truetype')*/

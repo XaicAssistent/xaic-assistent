@@ -42,6 +42,7 @@
                             class="dropDown"
                         ></DropDown>
                         <Button (touch)="onFocus($event)" [text]="selectedCategory == 0 ? 'Escoje tu categoria' : categorys[selectedCategory - 1].nombre" (tap)="choseCategory()" class="tipo-user-button"></Button>
+                        <Button (touch)="onFocus($event)" text="e906" (tap)="modalAddHorario.show()" class="tipo-user-button add-button ico"></Button>
                     </StackLayout>
                 </StackLayout>
             </ScrollView>
@@ -62,7 +63,7 @@
         <Button (touch)="onFocus($event)" text="Nueva categoría" (tap)="modalNewCategory.show()" class="tipo-user-button"></Button>
 
         <WrapLayout class="m-y-2 m-r-15 pull-right">
-            <Label (tap)="closeModal($event)" text="CANCEL" class="m-y-10 p-10 text-cancel"></Label>
+            <Label (tap)="closeModal(modalChoseCategory.hide())" text="CANCEL" class="m-y-10 p-10 text-cancel"></Label>
         </WrapLayout>
     </StackLayout>
 </StackLayout>
@@ -74,7 +75,25 @@
         <Button (touch)="onFocus($event)" text="Añadir" (tap)="addCategory()" class="tipo-user-button"></Button>
 
         <WrapLayout class="m-y-2 m-r-15 pull-right">
-            <Label (tap)="closeModal($event)" text="Cancelar" class="m-y-10 p-10 text-cancel"></Label>
+            <Label (tap)="modalNewCategory.hide()" text="Cancelar" class="m-y-10 p-10 text-cancel"></Label>
+        </WrapLayout>
+    </StackLayout>
+</StackLayout>
+
+<StackLayout style.zIndex="999" #modalAddHorario modal size="md" alignment="middle" dismissable="true" duration="100">
+    <StackLayout borderRadius="3" rows="*, auto" class="p-t-15 bg-white">
+
+        <!--<StackLayout orientation="horizontal">
+            <label *ngFor="let a of enumDias" [text]="a.substring(0,2)" class="dia" (tap)="addDay($event)"></label>            
+        </StackLayout>-->
+
+        <ListPicker row="1" [items]="enumDias" [selectedIndex]="selectedDay" class="p-15 picker"></ListPicker>
+        
+        <Button (touch)="onFocus($event)" text="+" class="tipo-user-button add-button"></Button>
+
+        <WrapLayout class="m-y-2 m-r-15 pull-right">
+            <Label (tap)="modalAddHorario.hide()" text="Cancelar" class="m-y-10 p-10 text-cancel"></Label>
+            <Label text="Aceptar" class="m-y-10 p-10 text-cancel"></Label>
         </WrapLayout>
     </StackLayout>
 </StackLayout>

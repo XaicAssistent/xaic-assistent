@@ -1,5 +1,5 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { View, Page } from 'tns-core-modules/ui/page/page';
+import { Component, OnInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
+import { View, Page, EventData } from 'tns-core-modules/ui/page/page';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { TouchGestureEventData } from 'tns-core-modules/ui/gestures/gestures';
 import { UserService } from '../services/UserService';
@@ -10,6 +10,8 @@ import { UserData } from '../model/UserData';
 import { ModalComponent } from '../modal';
 import { CategoryService } from '../services/CategoryService';
 import { Category } from '../model/Category';
+import { CategoryMapper } from '../mapper/CategoryMapper';
+import { DaysEnum } from '../utils/DaysEnum';
 
 @Component({
   selector: 'ns-home-page',
@@ -27,6 +29,7 @@ export class HomePageComponent implements OnInit {
   @ViewChild("content") angularContent: ElementRef;
   @ViewChild("modalNewCategory") modalNewCategory: ModalComponent;
   @ViewChild("modalChoseCategory") modalChoseCategory: ModalComponent;
+  @ViewChild("modalAddHorario") modalAddHorario: ModalComponent;
 
   loginLayout: View;
   regsiterLayout: View;
@@ -45,8 +48,10 @@ export class HomePageComponent implements OnInit {
   userData: UserData = new UserData();
 
   enumTipoUsuario = TypeUser;
+  enumDias = Object.keys(DaysEnum);
 
   selectedIndex = 0;
+  selectedDay = 0;
   selectedCategory = 0;
   items: Array<string> = ["Si", "No"];
   categorysNames: Array<string> = [];
@@ -57,7 +62,7 @@ export class HomePageComponent implements OnInit {
 
   newCategory: Category = new Category();
 
-  constructor(private _page: Page, private _userService: UserService, private _categoryService: CategoryService,private routerExtensions: RouterExtensions) {
+  constructor(private _page: Page, private _userService: UserService, private _categoryService: CategoryService,private routerExtensions: RouterExtensions, private renderer: Renderer2) {
   }
 
   ngOnInit(): void {
@@ -89,19 +94,11 @@ export class HomePageComponent implements OnInit {
      });
   }
 
-  choseCategory(modal : ModalComponent){
+  choseCategory(){
     this._categoryService.getCategorys().subscribe(
       (ok) => {
-        this.categorysNames = [];
-        this.categorys = [];
-        this.categorysNames.push("Categoria sin definir");
-        ok["categorys"].forEach((cat) => {
-          let category: Category = new Category();
-          category.idCategory = cat.IdCategory;
-          category.nombre = cat.Nombre;
-          this.categorys.push(category);
-          this.categorysNames.push(category.nombre);
-        });
+        this.categorys = CategoryMapper.categoryJSONToCategory(ok);
+        this.updateCategorysNames();
         this.modalChoseCategory.show();
       },
       (error) => {
@@ -112,12 +109,16 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  selectedNewCategory(){
-    console.log(this.categorys[this.selectedCategory - 1]);
+  updateCategorysNames(){
+    this.categorysNames = [];
+    this.categorysNames.push("Categoria sin definir");
+    this.categorys.forEach( cat => {this.categorysNames.push(cat.nombre)});
   }
 
-  closeModal(modal : ModalComponent) {
-    modal.hide;
+
+
+  selectedNewCategory(){
+    console.log(this.categorys[this.selectedCategory - 1]);
   }
 
   onButtonTap(){
@@ -126,7 +127,6 @@ export class HomePageComponent implements OnInit {
     if(this.isLogin){
       this._userService.logUser(this.email, this.pass).subscribe(
         (ok) => {
-
           if(ok["token"] !== "null"){
             //afegir al app settings
             this.navigating = true;
@@ -164,7 +164,15 @@ export class HomePageComponent implements OnInit {
   addCategory(){
     this._categoryService.addCategory(this.newCategory).subscribe(
       (ok) => {
-        console.log(ok);
+        if(ok["categorys"] !== "null"){
+          this.categorys = CategoryMapper.categoryJSONToCategory(ok);
+          this.updateCategorysNames();
+          this.modalNewCategory.hide();
+          this.modalChoseCategory.show();
+        }else{
+          FeedBack.feedBackError(ok["errorMesage"]);
+          this.modalNewCategory.show();
+        }
       },
       (error) => {
         FeedBack.feedBackError("Error de conexión...");
