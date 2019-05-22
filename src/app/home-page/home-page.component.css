@@ -128,7 +128,7 @@ reg-active-input {
 
 .etiqueta-campo{
   text-align: center;
-  font-size: 17;
+  font-size: 20;
   padding-bottom: 3%; 
 }
 
@@ -164,9 +164,40 @@ dropDown{
   background-color: rgba(26, 158, 81, 0.644);
 }
 
-.ico {
-  font-family: icomoon, icomoon;
-  font-weight: 400; 
+.label-dia{
+  text-align: center;
 }
 
-    /*url('../../fonts/icomoon.ttf') format('truetype')*/
+.label-dia-selected{
+  text-align: center;
+  margin: 3%;
+  font-size: 20;
+  color: #43a574;
+}
+
+.th{
+  text-align: center;
+  font-size: 18;
+  color: #43a574;
+}
+
+.td{
+  text-align: center;
+  font-size: 15;
+}
+
+.hr{
+  width: 50%;
+  border-bottom-color: rgba(26, 158, 81, 0.644);
+  border-bottom-width: 2;
+}
+
+.dia-horario{
+  margin: 50px;
+  font-size: 18;
+  margin-left: 150px;
+}
+
+.perido-horario{
+  margin-left: 200px;
+}

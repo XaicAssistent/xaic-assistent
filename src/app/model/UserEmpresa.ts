@@ -21,5 +21,6 @@ export class UserEmpresa extends UserData{
         this.foto = user && user.foto || "";
         this.pass = user && user.pass || "";
         this.tipoUsuario = TypeUser.Empresa;
+        this.periodos = [];
     }   
 }

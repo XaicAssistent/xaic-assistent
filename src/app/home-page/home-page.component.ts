@@ -1,5 +1,5 @@
-import { Component, OnInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
-import { View, Page, EventData } from 'tns-core-modules/ui/page/page';
+import { Component, OnInit, ElementRef, ViewChild, Renderer2, Output } from '@angular/core';
+import { View, Page } from 'tns-core-modules/ui/page/page';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { TouchGestureEventData } from 'tns-core-modules/ui/gestures/gestures';
 import { UserService } from '../services/UserService';
@@ -12,6 +12,11 @@ import { CategoryService } from '../services/CategoryService';
 import { Category } from '../model/Category';
 import { CategoryMapper } from '../mapper/CategoryMapper';
 import { DaysEnum } from '../utils/DaysEnum';
+import { UserNormal } from '../model/UserNormal';
+import { ListPicker } from "tns-core-modules/ui/list-picker";
+import { UserEmpresa } from '../model/UserEmpresa';
+import { Periodo } from '../model/Perido';
+import { TimePicker } from 'tns-core-modules/ui/time-picker/time-picker';
 
 @Component({
   selector: 'ns-home-page',
@@ -27,8 +32,11 @@ export class HomePageComponent implements OnInit {
   @ViewChild("logo") logoRef: ElementRef;
   @ViewChild("login") angularLogin: ElementRef;
   @ViewChild("content") angularContent: ElementRef;
+  @ViewChild("horaInicio") angularhoraInicio: ElementRef;
+  @ViewChild("horaFin") angularhoraFin: ElementRef;
   @ViewChild("modalNewCategory") modalNewCategory: ModalComponent;
   @ViewChild("modalChoseCategory") modalChoseCategory: ModalComponent;
+  @ViewChild("modalNewPeriodo") modalNewPeriodo: ModalComponent;
   @ViewChild("modalAddHorario") modalAddHorario: ModalComponent;
 
   loginLayout: View;
@@ -37,6 +45,8 @@ export class HomePageComponent implements OnInit {
   circleItem: View;
   logoItem: View;
   content: View;
+  horaInicio: TimePicker;
+  horaFin: TimePicker;
 
   isLogin = true;
   formSubmitted = false;
@@ -44,8 +54,11 @@ export class HomePageComponent implements OnInit {
   loginTxt = "L o g i n";
 
   tipoUsuario: TypeUser;
+  verHorarios: boolean = true;
 
   userData: UserData = new UserData();
+  userNormal: UserNormal = new UserNormal();
+  userEmpresa: UserEmpresa = new UserEmpresa();
 
   enumTipoUsuario = TypeUser;
   enumDias = Object.keys(DaysEnum);
@@ -56,6 +69,8 @@ export class HomePageComponent implements OnInit {
   items: Array<string> = ["Si", "No"];
   categorysNames: Array<string> = [];
   categorys: Category[] = [];
+
+  periodos: Periodo[] = [];
 
   email = "";
   pass = "";
@@ -72,12 +87,16 @@ export class HomePageComponent implements OnInit {
         this.navigating = false;
         this.logoItem.translateY = 0;
     })
+    this._page.actionBarHidden = true;
     this.btnItem = this.btnRef.nativeElement;
     this.loginLayout = this.angularLogin.nativeElement;
     this.regsiterLayout = this.angularRegister.nativeElement;
     this.circleItem = this.circleRef.nativeElement;
     this.logoItem = this.logoRef.nativeElement;
     this.content = this.angularContent.nativeElement;
+
+    this.horaInicio = this.angularhoraInicio.nativeElement;
+    this.horaFin = this.angularhoraFin.nativeElement;
 
     this.regsiterLayout.scaleY = 0;
     this.regsiterLayout.scaleX = 0;
@@ -91,7 +110,64 @@ export class HomePageComponent implements OnInit {
       actions: Object.keys(TypeUser)
     }).then(result => {
       this.tipoUsuario = TypeUser[result];
+      if(this.tipoUsuario == TypeUser.Empresa){
+        this.userEmpresa = new UserEmpresa(this.userData);
+      }else if(this.tipoUsuario == TypeUser.Normal){
+        this.userNormal = new UserNormal(this.userData);
+      }
      });
+  }
+
+  eliminarPeriodo(i : number){
+    let perido = this.periodos[i];
+    this.userEmpresa.periodos = this.userEmpresa.periodos.filter(obj => !obj.equals(perido));
+    this.searchPeriods();
+  }
+
+  addNewHorario(){
+    let perido: Periodo = new Periodo();
+    perido.dia = DaysEnum[this.enumDias[this.selectedDay]];
+    perido.empiezaHora = this.horaInicio.hour;
+    perido.empiezaMinuto = this.horaInicio.minute;
+    perido.acabaHora = this.horaFin.hour;
+    perido.acabaMinuto = this.horaFin.minute;
+    
+    if(this.userEmpresa.periodos.filter(per => per.estaDentro(perido)).length == 0){
+      this.userEmpresa.periodos.push(perido);
+
+      this.searchPeriods();
+      this.modalNewPeriodo.hide(); 
+      this.modalAddHorario.show();
+    }else{
+      FeedBack.feedBackError("No pudes poner un perido dentro de otro...");
+    }
+  }
+
+  searchPeriods(){
+    this.periodos = this.userEmpresa.periodos.filter( perido => perido.dia == DaysEnum[this.enumDias[this.selectedDay]]);
+  }
+
+  searchPeriodsByDay(dia: any) : Periodo[]{
+    return this.userEmpresa.periodos.filter( perido => perido.dia == DaysEnum[dia]);
+  }
+
+  onTimeChangedInicio(args) {
+    let timePicker = <TimePicker>args.object;
+
+    this.horaFin.hour = timePicker.hour == 23 ? 0 : timePicker.hour + 1;
+    this.horaFin.minute = timePicker.minute;
+  }
+
+  onTimeChangedFin(args) {
+    let timePicker = <TimePicker>args.object;
+
+    if(timePicker.hour < this.horaInicio.hour && timePicker.hour != 0){
+      timePicker.hour = this.horaInicio.hour;
+    }
+
+    if(timePicker.hour == this.horaInicio.hour && (timePicker.minute - 5) < this.horaInicio.minute){
+      timePicker.minute = this.horaInicio.minute + 5;
+    }
   }
 
   choseCategory(){
@@ -115,10 +191,10 @@ export class HomePageComponent implements OnInit {
     this.categorys.forEach( cat => {this.categorysNames.push(cat.nombre)});
   }
 
-
-
-  selectedNewCategory(){
-    console.log(this.categorys[this.selectedCategory - 1]);
+  selectedIndexChanged(args){
+    let picker = <ListPicker>args.object;
+    this.selectedDay = picker.selectedIndex;
+    this.searchPeriods();
   }
 
   onButtonTap(){
@@ -157,7 +233,7 @@ export class HomePageComponent implements OnInit {
         }
       );
     }else{
-      console.log("register");
+      console.log(this.tipoUsuario == TypeUser.Empresa ? this.userEmpresa : this.userNormal);
     }
   }
 

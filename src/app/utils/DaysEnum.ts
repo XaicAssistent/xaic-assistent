@@ -1,9 +1,9 @@
 export enum DaysEnum {
-    Lunes = "Lu",
-    Martes = "Ma",
-    Miercoles = "Mi",
-    Jueves = "Ju",
-    Viernes = "Vi",
-    Sabado = "Sa",
-    Domingo = "Do"
+    Lunes = "Lunes",
+    Martes = "Martes",
+    Miercoles = "Miercoles",
+    Jueves = "Jueves",
+    Viernes = "Viernes",
+    Sabado = "Sabado",
+    Domingo = "Domingo"
 }

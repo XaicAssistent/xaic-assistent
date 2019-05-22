@@ -1,7 +1,7 @@
 import { UserData } from "./UserData";
 import { TypeUser } from "../utils/TypeUser";
 
-export class UserEmpresa extends UserData{
+export class UserNormal extends UserData{
     fechaNacimiento: Date;
     alergias: string;
 
