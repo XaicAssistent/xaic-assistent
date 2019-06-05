@@ -235,3 +235,18 @@ dropDown{
   font-size: 20;
   padding: 5,5,5,5;
 }
+
+.direction-field{
+width: 85%;
+}
+
+.search-icon{
+  font-size: 25;
+  margin-left: 10;
+  margin-top: 10;
+}
+
+.accept-direction{
+  background-color: green;
+  z-index: 800;
+}

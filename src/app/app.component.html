@@ -1,4 +1,4 @@
-<RadSideDrawer [drawerTransition]="sideDrawerTransition">
+<RadSideDrawer [drawerTransition]="sideDrawerTransition" gesturesEnabled="false">
     <GridLayout tkDrawerContent rows="auto, *" class="sidedrawer sidedrawer-left">
         <StackLayout row="0" class="sidedrawer-header">
             <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
@@ -33,11 +33,6 @@
                 <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/settings')" (tap)="onNavItemTap('/settings')">
                     <Label col="0" text="&#xe994;" class="fa"></Label>
                     <Label col="1" text="Ajustes" class="p-r-10"></Label>
-                </GridLayout>
-
-                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/home')" (tap)="closeSesion()">
-                    <Label col="0" text="&#xea14;" class="fa"></Label>
-                    <Label col="1" text="Cerrar sesión" class="p-r-10"></Label>
                 </GridLayout>
             </StackLayout>
         </ScrollView>

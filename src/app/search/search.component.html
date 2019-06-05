@@ -1,9 +1,12 @@
 <StackLayout>
+    <StackLayout>
+        <btn_menu-opener height="10%"></btn_menu-opener>
+    </StackLayout>
     <StackLayout height="10%">
         <Label text="{{selectedCategory == 0 ? 'Todas las categorias' : categorys[selectedCategory - 1].nombre}} &#xea5b;" (tap)="choseCategory()" class="filtro fa"></Label>
     </StackLayout>
     
-    <ScrollView height="90%">
+    <ScrollView height="80%">
         <ListView [items]="allUsersEmpresa" (itemTap)="onItemTap($event)">
             <ng-template let-item="item">
                 <StackLayout class="usuario" orientation="horizontal">
@@ -11,7 +14,7 @@
                         <ActivityIndicator
                             class="activity-indicator"
                             row="0"
-                            col="0"
+                            col="0" 
                             busy="true"
                             width="50"
                             height="50"
@@ -23,7 +26,7 @@
                         <label [text]="item.nombre + ' ' + item.apellidos"></label>
                         <label class="categoria" [text]="item.category.nombre"></label>
                         <StackLayout orientation="horizontal">
-                            <Label col="0" text="&#xe953;" class="fa" [nsRouterLink]="['/newEventEmpresa', item.idUser]"></Label>
+                            <Label col="0" text="&#xe953;" class="fa" [nsRouterLink]="['/newEventEmpresa',item.idUser]"></Label>
                             <Label col="0" text="&#xe942;" class="fa" (tap)="llamar(item.telefono)"></Label>
                             <Label col="0" text="&#xe970;" class="fa"></Label>
                         </StackLayout>

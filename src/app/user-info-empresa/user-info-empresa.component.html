@@ -1,3 +1,6 @@
+<ActionBar title="Datos de la empresa">
+        <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="routerExtensions.navigateByUrl('calendar', { clearHistory: true });"></NavigationButton>
+    </ActionBar>
 <StackLayout>
     <StackLayout orientation="horizontal" class="header">
         <StackLayout class="info">
@@ -10,7 +13,7 @@
     </StackLayout>
     <StackLayout orientation="horizontal">
         <Button text="&#xe947; MI UBICACIÓN" width="50%" class="buttons fa" (tap)="openMap()"></Button>
-        <Button text="&#xe90e; ENVIAME UN CORREO" width="50%" class="buttons fa" (tap)="openEmail()"></Button>
+        <Button text="&#xe90e; ENVIAR UN CORREO" width="50%" class="buttons fa" (tap)="openEmail()"></Button>
     </StackLayout>
     <!--<StackLayout>
         <Label class="labels" text="HORARIOS"></Label>

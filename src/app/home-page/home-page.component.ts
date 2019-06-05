@@ -23,13 +23,15 @@ import { CameraService } from '../services/Camera.service';
 import * as appSettings from "tns-core-modules/application-settings";
 import { UserMapper } from '../mapper/UserMapper';
 import { UserLoged } from '../utils/UserLoged';
+import { LatLng } from 'nativescript-mapbox';
+import { MapsService } from '../services/MapsService';
 
 @Component({
   selector: 'ns-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
   moduleId: module.id,
-  providers: [UserService, CategoryService, CameraService]
+  providers: [UserService, CategoryService, CameraService, MapsService]
 })
 export class HomePageComponent implements OnInit {
   @ViewChild("register") angularRegister: ElementRef;
@@ -47,6 +49,9 @@ export class HomePageComponent implements OnInit {
   @ViewChild("modalAddHorario") modalAddHorario: ModalComponent;
   @ViewChild("modalVerificarCodigo") modalVerificarCodigo: ModalComponent;
   @ViewChild("modalAddPhotoEmpresa") modalAddPhotoEmpresa: ModalComponent;
+
+  @ViewChild("modalOpenMap") modalOpenMap: ModalComponent;
+  @ViewChild("map") map: ElementRef;
 
   loginLayout: View;
   regsiterLayout: View;
@@ -82,7 +87,9 @@ export class HomePageComponent implements OnInit {
 
   periodos: Periodo[] = [];
 
-  imagen:any;
+  imagen: any;
+
+  direccion = "";
 
   email = "";
   pass = "";
@@ -92,15 +99,15 @@ export class HomePageComponent implements OnInit {
 
   imageSlider: String[] = ["https://lorempixel.com/800/600/city/2/", "https://lorempixel.com/800/600/nightlife/6/", "https://lorempixel.com/800/600/nightlife/5/"];
 
-  constructor(private _page: Page, private _cameraService : CameraService, private _userService: UserService, private _categoryService: CategoryService, private routerExtensions: RouterExtensions, private renderer: Renderer2) {
+  constructor(private _page: Page, private _cameraService: CameraService, private _userService: UserService, private _categoryService: CategoryService, private _mapService: MapsService, private routerExtensions: RouterExtensions, private renderer: Renderer2) {
   }
 
   ngOnInit(): void {
     this._page.on('navigatingTo', (data) => {
-        this.circleItem.scaleX = 0;
-        this.circleItem.scaleY = 0;
-        this.navigating = false;
-        this.logoItem.translateY = 0;
+      this.circleItem.scaleX = 0;
+      this.circleItem.scaleY = 0;
+      this.navigating = false;
+      this.logoItem.translateY = 0;
     })
     this._page.actionBarHidden = true;
     this.btnItem = this.btnRef.nativeElement;
@@ -119,41 +126,120 @@ export class HomePageComponent implements OnInit {
     this.circleItem.scaleX = 0;
     this.circleItem.scaleY = 0;
 
-    if(appSettings.getString("tokenUser", "") != ""){
+    if (appSettings.getString("tokenUser", "") != "") {
       this.irACalendar();
     }
   }
-  
-  choseTypeUser(){
+
+  public onMapReady(args: any) {
+
+    this.map.nativeElement.setOnMapClickListener((point: LatLng) => {
+      this.userData.latitud = String(point.lat);
+      this.userData.longitud = String(point.lng);
+      this.map.nativeElement.removeMarkers();
+      this.map.nativeElement.addMarkers([
+        {
+          lat: point.lat,
+          lng: point.lng
+        }
+      ])
+      this._mapService.getDirection(point.lat, point.lng).subscribe(
+        (dir) => {
+          console.log(dir);
+          this.userData.direccion = dir["results"][0]["address_components"][1]["long_name"]
+        }, (err) => {
+          console.log(err);
+        });
+    });
+    
+  }
+
+  abrirMapa() {
+    this.modalOpenMap.show()
+    this.map.nativeElement.getUserLocation().then(
+      (user) => {
+        this.map.nativeElement.animateCamera({
+          // this is where we animate to
+          target: {
+            lat: user.location.lat,
+            lng: user.location.lng
+          },
+          zoomLevel: 12, // Android
+          duration: 4000 // default 10000 (milliseconds)
+        })
+      });
+
+  }
+
+  direccionRegistro() {
+    console.log("click boton buscar");
+    console.log(this.direccion);
+    this._mapService.getCoordinates(this.direccion).subscribe(
+    (resp)=>{
+      console.log(resp);
+      var latitud = resp["results"][0]["geometry"]["location"]["lat"];
+      var longitud = resp["results"][0]["geometry"]["location"]["lng"];
+      this.map.nativeElement.removeMarkers();
+      this.map.nativeElement.addMarkers([
+        {
+          lat: latitud,
+          lng: longitud
+        }
+      ])
+      this.map.nativeElement.animateCamera({
+        // this is where we animate to
+        target: {
+          lat: latitud,
+          lng: longitud
+        },
+        zoomLevel: 12, // Android
+        duration: 4000 // default 10000 (milliseconds)
+      })
+      this._mapService.getDirection(latitud,longitud).subscribe(
+        (resp)=>{
+          this.userData.direccion = resp["results"][0]["address_components"][1]["long_name"] + ", "+ resp["results"][0]["address_components"][3]["long_name"];
+        },
+        (err)=>{
+          console.log(err);
+        });
+        this.userData.latitud = latitud;
+        this.userData.longitud = longitud;
+    },
+    (err)=>{
+      console.log(err);
+    });
+  }
+
+  choseTypeUser() {
     dialogs.action({
       message: "Tipo de usuario",
       actions: Object.keys(TypeUser)
     }).then(result => {
       this.tipoUsuario = TypeUser[result];
-     });
+    });
   }
 
-  eliminarPeriodo(i : number){
+  eliminarPeriodo(i: number) {
     let perido = this.periodos[i];
     this.userEmpresa.periodos = this.userEmpresa.periodos.filter(obj => !obj.equals(perido));
     this.searchPeriods();
   }
 
-  addNewHorario(){
+  addNewHorario() {
     let perido: Periodo = new Periodo();
     perido.dia = DaysEnum[this.enumDias[this.selectedDay]];
     perido.empiezaHora = this.horaInicio.hour;
     perido.empiezaMinuto = this.horaInicio.minute;
     perido.acabaHora = this.horaFin.hour;
     perido.acabaMinuto = this.horaFin.minute;
-    
-    if(this.userEmpresa.periodos.filter(per => per.estaDentro(perido)).length == 0){
+
+    if (this.userEmpresa.periodos.filter(per => per.estaDentro(perido)).length == 0) {
       this.userEmpresa.periodos.push(perido);
 
       this.searchPeriods();
-      this.modalNewPeriodo.hide(); 
+      this.modalNewPeriodo.hide();
       this.modalAddHorario.show();
-    }else{
+    } else {
       FeedBack.feedBackError("No pudes poner un perido dentro de otro...");
     }
   }
@@ -177,7 +263,7 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  choseMapDirection(){
+  choseMapDirection() {
     this.routerExtensions.navigateByUrl("route");
   }
 
@@ -190,13 +276,13 @@ export class HomePageComponent implements OnInit {
   }
 
   addPhotoEmpresaToUser(resp) {
-    console.log("foto añadida a array: "+resp["base64"]);
+    console.log("foto añadida a array: " + resp["base64"]);
     this.userEmpresa.fotosEmpresa.push(resp["base64"]);
     this.imageSlider.push(resp["image"]);
     this.modalAddPhotoEmpresa.hide();
   }
 
-  selectPhoto(){
+  selectPhoto() {
     dialogs.action({
       message: "Escoge una opcion",
       cancelButtonText: "Cancelar",
@@ -206,8 +292,8 @@ export class HomePageComponent implements OnInit {
     });
   }
 
-  pickPhoto(){
-    let options:camera.CameraOptions = {
+  pickPhoto() {
+    let options: camera.CameraOptions = {
       width: 200,
       height: 200,
       keepAspectRatio: true,
@@ -225,7 +311,7 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  selectGaleryPhoto(){
+  selectGaleryPhoto() {
     this._cameraService.selectGaleryPhoto().then(
       (resp) => {
         this.ponerFoto(resp);
@@ -233,25 +319,25 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  ponerFoto(resp){
-    if(this.tipoUsuario == undefined){
+  ponerFoto(resp) {
+    if (this.tipoUsuario == undefined) {
       this.userData.foto = resp["base64"];
-    }else{
-      if(this.tipoUsuario == "empresa") { 
+    } else {
+      if (this.tipoUsuario == "empresa") {
         this.userEmpresa.foto = resp["base64"];
-      }else{
+      } else {
         this.userNormal.foto = resp["base64"];
       }
     }
     this.imagen = resp["image"];
   }
 
-  searchPeriods(){
-    this.periodos = this.userEmpresa.periodos.filter( perido => perido.dia == DaysEnum[this.enumDias[this.selectedDay]]);
+  searchPeriods() {
+    this.periodos = this.userEmpresa.periodos.filter(perido => perido.dia == DaysEnum[this.enumDias[this.selectedDay]]);
   }
 
-  searchPeriodsByDay(dia: any) : Periodo[]{
-    return this.userEmpresa.periodos.filter( perido => perido.dia == DaysEnum[dia]);
+  searchPeriodsByDay(dia: any): Periodo[] {
+    return this.userEmpresa.periodos.filter(perido => perido.dia == DaysEnum[dia]);
   }
 
   onTimeChangedInicio(args) {
@@ -264,16 +350,16 @@ export class HomePageComponent implements OnInit {
   onTimeChangedFin(args) {
     let timePicker = <TimePicker>args.object;
 
-    if(timePicker.hour < this.horaInicio.hour && timePicker.hour != 0){
+    if (timePicker.hour < this.horaInicio.hour && timePicker.hour != 0) {
       timePicker.hour = this.horaInicio.hour;
     }
 
-    if(timePicker.hour == this.horaInicio.hour && (timePicker.minute - 5) < this.horaInicio.minute){
+    if (timePicker.hour == this.horaInicio.hour && (timePicker.minute - 5) < this.horaInicio.minute) {
       timePicker.minute = this.horaInicio.minute + 5;
     }
   }
 
-  choseCategory(){
+  choseCategory() {
     this._categoryService.getCategorys().subscribe(
       (ok) => {
         this.categorys = CategoryMapper.categoryJSONToCategory(ok);
@@ -288,28 +374,28 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  updateCategorysNames(){
+  updateCategorysNames() {
     this.categorysNames = [];
     this.categorysNames.push("Categoria sin definir");
-    this.categorys.forEach( cat => {this.categorysNames.push(cat.nombre)});
+    this.categorys.forEach(cat => { this.categorysNames.push(cat.nombre) });
   }
 
-  selectedIndexChanged(args){
+  selectedIndexChanged(args) {
     let picker = <ListPicker>args.object;
     this.selectedDay = picker.selectedIndex;
     this.searchPeriods();
   }
 
-  irACalendar(){
+  irACalendar() {
     this._userService.getUser().subscribe(
       (ok) => {
-        if(ok["user"] !== "null"){
+        if (ok["user"] !== "null") {
           UserLoged.getInstance().setUserLoged(UserMapper.userJSONToUserData(ok['user'], ok['userTipoData']));
           this.content.height = 0;
           this.cabecera.height = 1000;
           this.logoItem.animate({
             translate: { x: 0, y: 300 },
-            scale: { x: 1.8, y: 1.8},
+            scale: { x: 1.8, y: 1.8 },
             duration: 400
           }).then(() => {
             this.circleItem.translateY = 200;
@@ -321,7 +407,7 @@ export class HomePageComponent implements OnInit {
               this.formSubmitted = false;
             });
           });
-        }else{
+        } else {
           this.formSubmitted = false;
           FeedBack.feedBackError(ok["errorMesage"]);
         }
@@ -333,17 +419,17 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  onButtonTap(){
+  onButtonTap() {
     this.formSubmitted = true;
-    
-    if(this.isLogin){
+
+    if (this.isLogin) {
       this._userService.logUser(this.email, this.pass).subscribe(
         (ok) => {
-          if(ok["token"] !== "null"){
+          if (ok["token"] !== "null") {
             appSettings.setString("tokenUser", ok["token"]);
             this.navigating = true;
             this.irACalendar();
-          }else{
+          } else {
             this.formSubmitted = false;
             FeedBack.feedBackError(ok["errorMesage"]);
           }
@@ -354,20 +440,20 @@ export class HomePageComponent implements OnInit {
           console.log(error);
         }
       );
-    }else{
-      if(this.tipoUsuario == TypeUser.Empresa){
+    } else {
+      if (this.tipoUsuario == TypeUser.Empresa) {
         this.userEmpresa.passData(this.userData);
         this.userEmpresa.direccionFija = this.selectedIndex == 0;
-      }else if(this.tipoUsuario == TypeUser.Normal){
+      } else if (this.tipoUsuario == TypeUser.Normal) {
         this.userNormal.passData(this.userData);
       }
 
       this._userService.registerUser(this.tipoUsuario == TypeUser.Empresa ? this.userEmpresa : this.userNormal).subscribe(
-        (ok) =>{
-          if(ok["idUser"] !== "null"){
+        (ok) => {
+          if (ok["idUser"] !== "null") {
             this.formSubmitted = false;
             this.modalVerificarCodigo.show();
-          }else{
+          } else {
             this.formSubmitted = false;
             FeedBack.feedBackError(ok["errorMesage"]);
           }
@@ -380,14 +466,14 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  verificarCodigo(){
+  verificarCodigo() {
     this._userService.verificarCodigo(this.email, this.codigo).subscribe(
       (ok) => {
-        if(<boolean>ok["code"] == true){
+        if (<boolean>ok["code"] == true) {
           this.modalVerificarCodigo.hide();
           FeedBack.feedBackSucces("Cuenta verificada Corectamente");
           this.setToLogin();
-        }else{
+        } else {
           FeedBack.feedBackError(ok["errorMesage"]);
         }
       },
@@ -398,20 +484,20 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  categorySelected(){
+  categorySelected() {
     this.userEmpresa.category = this.categorys[this.selectedCategory - 1];
     this.modalChoseCategory.hide()
   }
 
-  addCategory(){
+  addCategory() {
     this._categoryService.addCategory(this.newCategory).subscribe(
       (ok) => {
-        if(ok["categorys"] !== "null"){
+        if (ok["categorys"] !== "null") {
           this.categorys = CategoryMapper.categoryJSONToCategory(ok);
           this.updateCategorysNames();
           this.modalNewCategory.hide();
           this.modalChoseCategory.show();
-        }else{
+        } else {
           FeedBack.feedBackError(ok["errorMesage"]);
           this.modalNewCategory.show();
         }
@@ -446,13 +532,13 @@ export class HomePageComponent implements OnInit {
       args.view.scaleY = 0.9;
     } else if (args.action == "up") {
       args.view.scaleX = 1;
-      args.view.scaleY = 1 ;
+      args.view.scaleY = 1;
     }
   }
 
   setToLogin() {
     this.content.animate({
-      translate: { x: 0, y: 0 }, 
+      translate: { x: 0, y: 0 },
       duration: 150
     }).then(() => {
       this.isLogin = true;
@@ -465,11 +551,11 @@ export class HomePageComponent implements OnInit {
           scale: { x: 0, y: 0 },
           duration: 300
         }).then(() => {
-            this.btnItem.animate({
-                translate: { x: 0, y: 0 },
-                duration: 200
-            }).then(() => {
-              this.loginLayout.animate({ scale: { x: 1, y: 1 }, duration: 200 })
+          this.btnItem.animate({
+            translate: { x: 0, y: 0 },
+            duration: 200
+          }).then(() => {
+            this.loginLayout.animate({ scale: { x: 1, y: 1 }, duration: 200 })
           });
         });
       });
@@ -486,7 +572,7 @@ export class HomePageComponent implements OnInit {
         duration: 150
       }).then(() => {
         this.content.animate({
-          translate: {x: 0, y: -35},
+          translate: { x: 0, y: -35 },
           duration: 200
         });
         this.isLogin = false;

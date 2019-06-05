@@ -11,7 +11,6 @@ import { SettingsComponent } from "./settings/settings.component";
 import { NewEventComponent } from "./new-event/new-event.component";
 import { NewEventEmpresaComponent } from "./new-event-empresa/new-event-empresa.component";
 import { UserInfoEmpresaComponent } from "./user-info-empresa/user-info-empresa.component";
-import { DailyInfoComponent } from "./daily-info/daily-info.component";
 
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -23,8 +22,7 @@ const routes: Routes = [
     { path: "settings", component: SettingsComponent },
     { path: "newEvent", component: NewEventComponent },
     { path: "newEventEmpresa/:id", component: NewEventEmpresaComponent },
-    { path: "user-info-empresa", component: UserInfoEmpresaComponent },
-    { path: "infoDaily", component: DailyInfoComponent }
+    { path: "user-info-empresa", component: UserInfoEmpresaComponent }
 ];
 
 @NgModule({

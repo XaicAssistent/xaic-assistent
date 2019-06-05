@@ -18,11 +18,6 @@ export class EventService {
         return this.http.post(serverUrl, event, {headers: this.createRequestHeader()});
     }
 
-    updateEvent(event: Event){
-        let serverUrl = "https://stucom.flx.cat/alu/dam2t01/updateEvent/" + appSettings.getString("tokenUser", "");
-        return this.http.post(serverUrl, event, {headers: this.createRequestHeader()});
-    }
-
     getEvents(){
         let serverUrl = "https://stucom.flx.cat/alu/dam2t01/getCalendar/" + appSettings.getString("tokenUser", "");
         return this.http.get(serverUrl, {headers: this.createRequestHeader()});
@@ -46,15 +41,5 @@ export class EventService {
     aceptarEvento(evento: Event){
         let serverUrl = "https://stucom.flx.cat/alu/dam2t01/aceptarEvento/" + appSettings.getString("tokenUser", "");
         return this.http.post(serverUrl, evento, {headers: this.createRequestHeader()});
-    }
-
-    getEvent(idEvento){
-        let serverUrl = "https://stucom.flx.cat/alu/dam2t01/getEventoById/" + appSettings.getString("tokenUser", "") + "/" + idEvento;
-        return this.http.get(serverUrl, {headers: this.createRequestHeader()});
-    }
-
-    deleteEvent(idEvento){
-        let serverUrl = "https://stucom.flx.cat/alu/dam2t01/deleteEvent/" + appSettings.getString("tokenUser", "") + "/" + idEvento;
-        return this.http.delete(serverUrl, {headers: this.createRequestHeader()});
     }
 }

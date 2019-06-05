@@ -6,7 +6,6 @@
         <StackLayout>
             <TextField hint="Titulo" [(ngModel)]="newEvent.titulo" class="form-input"></TextField>
             <TextView height="auto" [(ngModel)]="newEvent.descripcion" hint="Descripción" returnKeyType="send" class="form-input"></TextView>
-            <TextField hint="Dirección" [(ngModel)]="newEvent.location" class="form-input"></TextField>
             <StackLayout orientation="horizontal" class="field" (tap)="modalfecha.show()">
                 <Label text="Fecha" class="etiqueta derecha"></Label>
                 <Label [text]="(newEvent.fecha | date)" class="etiqueta izquierda"></Label>

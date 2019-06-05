@@ -1,5 +1,4 @@
 import { UserData } from "../model/UserData";
-import * as appSettings from "tns-core-modules/application-settings";
 
 export class UserLoged{
     private static instance : UserLoged;
@@ -21,10 +20,5 @@ export class UserLoged{
 
     getUserLoged(): UserData{
         return this.userLoged;
-    }
-
-    deleteUserData(){
-        this.userLoged = new UserData();
-        appSettings.setString("tokenUser", "");
     }
 }

@@ -29,7 +29,7 @@ import { BtnAddEventComponent } from "./custom-components/bnt_add-event.componen
 import { NewEventComponent } from './new-event/new-event.component';
 import { NewEventEmpresaComponent } from './new-event-empresa/new-event-empresa.component';
 import { UserInfoEmpresaComponent } from './user-info-empresa/user-info-empresa.component';
-import { DailyInfoComponent } from './daily-info/daily-info.component';
+import { BtnMenuOpenerComponent } from "./custom-components/btn_menu-opener.component";
 
 @NgModule({
     bootstrap: [
@@ -60,7 +60,7 @@ import { DailyInfoComponent } from './daily-info/daily-info.component';
         NewEventComponent,
         NewEventEmpresaComponent,
         UserInfoEmpresaComponent,
-        DailyInfoComponent
+        BtnMenuOpenerComponent
     ],
     providers: [],
     schemas: [

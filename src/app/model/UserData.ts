@@ -9,6 +9,8 @@ export class UserData{
     telefono: string;
     premium: boolean;
     direccion: string;
+    latitud: string;
+    longitud: string;
     foto: string;
     tipoUsuario: TypeUser;
     pass: string;

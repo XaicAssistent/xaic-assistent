@@ -12,6 +12,8 @@ import { EventService } from '../services/EventService';
 import { Periodo } from '../model/Perido';
 import { PeriodoMapper } from '../mapper/PeriodoMapper';
 import { RouterExtensions } from 'nativescript-angular/router';
+import * as app from "tns-core-modules/application";
+import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 
 @Component({
   selector: 'ns-new-event-empresa',
@@ -23,6 +25,8 @@ import { RouterExtensions } from 'nativescript-angular/router';
 export class NewEventEmpresaComponent implements OnInit {
   @ViewChild("modalfecha") modalfecha: ModalComponent;
 
+  sideDrawer = <RadSideDrawer>app.getRootView();
+
   userEmpresa: UserEmpresa = new UserEmpresa();
   newEvent: Event = new Event();
   periodos: Periodo[] = [];
@@ -33,6 +37,7 @@ export class NewEventEmpresaComponent implements OnInit {
   constructor(private route: ActivatedRoute, private _userService: UserService, private _eventService: EventService, private routerExtensions: RouterExtensions) { }
 
   ngOnInit() {
+    this.sideDrawer.gesturesEnabled = false;
     this._userService.getInfoNewEventEmpresa(this.route.snapshot.params["id"]).subscribe(
       (ok) => {
         if(ok["response"] !== "null"){

@@ -9,7 +9,9 @@ import { EventService } from '../services/EventService';
 import { EventMapper } from '../mapper/EventMapper';
 import { Event } from '../model/Event';
 import { UserLoged } from '../utils/UserLoged';
-import { RouterExtensions } from 'nativescript-angular/router';
+import * as app from "tns-core-modules/application";
+import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
+import { Page } from 'tns-core-modules/ui/page/page';
 
 @Component({
   selector: 'ns-daily',
@@ -23,6 +25,8 @@ export class DailyComponent implements OnInit {
   @ViewChild("modalCancelarCita") modalCancelarCita: ModalComponent;
   @ViewChild("modalDuracion") modalDuracion: ModalComponent;
 
+  sideDrawer = <RadSideDrawer>app.getRootView();
+
   estadosNames: Array<string> = [];
   selectedEstado = 0;
   estados: EstadoEvento[] = [];
@@ -35,9 +39,11 @@ export class DailyComponent implements OnInit {
   maxTime: number = 100;
   time: number = 10;
 
-  constructor(private _estadoEventoService: EstadoEventoService, private _eventService: EventService, private routerExtensions: RouterExtensions) { }
+  constructor(private _estadoEventoService: EstadoEventoService, private _eventService: EventService,private page:Page) { }
 
-  ngOnInit() {                      
+  ngOnInit() {
+    this.page.actionBarHidden = true;
+    this.sideDrawer.gesturesEnabled = true;                      
     this.userLoged = UserLoged.getInstance().getUserLoged();
     this._estadoEventoService.getAllEstados().subscribe(
       (ok) => {
@@ -65,24 +71,7 @@ export class DailyComponent implements OnInit {
   cancelarCita(id){
     this.motivoCancelacion = "";
     this.eventoSelected = this.events.filter(eve => eve.idEvento == id)[0];
-    if(this.eventoSelected.estado.codigo == "EP"){
-      this._eventService.deleteEvent(id).subscribe(
-        (ok) => {
-          if(ok["response"] == "true"){
-            FeedBack.feedBackSucces("Evento eliminado correctamente");
-            this.buscarEventos();
-          }else{
-            FeedBack.feedBackError(ok["errorMesage"]);
-          }
-        },
-        (erro) => {
-          console.log("ERROR PMV");
-          console.log(erro);
-        }
-      );
-    }else{
-      this.modalCancelarCita.show();
-    }
+    this.modalCancelarCita.show();
   }
 
   confirmacionCancelarCita(){
@@ -172,13 +161,6 @@ export class DailyComponent implements OnInit {
   }
 
   tapInEvent(args){
-    var idEvento = {
-      queryParams: {
-        "idEvento" : this.events[args.index].idEvento,
-        "rutaAnterior" : "daily"
-      },
-      clearHistory : true
-    }
-    this.routerExtensions.navigate(["/infoDaily"], idEvento);
+    console.log("You tapped: " + args.index);
   }
 }
