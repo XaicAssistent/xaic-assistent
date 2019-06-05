@@ -1,3 +1,6 @@
+<ActionBar title="Concerta tu cita">
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="routerExtensions.navigateByUrl('calendar', { clearHistory: true });"></NavigationButton>
+</ActionBar>
 <StackLayout>
     <ScrollView height="80%">
         <StackLayout>
@@ -22,7 +25,6 @@
                 <StackLayout>
                     <TextField hint="Titulo" [(ngModel)]="newEvent.titulo" class="form-input"></TextField>
                     <TextView height="auto" [(ngModel)]="newEvent.descripcion" hint="Descripción" returnKeyType="send" class="form-input"></TextView>
-                    <TextField hint="Dirección" *ngIf="userEmpresa.direccionFija == 1" [(ngModel)]="newEvent.location" class="form-input"></TextField>
                     <StackLayout orientation="horizontal" class="field" (tap)="modalfecha.show()">
                         <Label text="Fecha" class="etiqueta derecha"></Label>
                         <Label [text]="(newEvent.fecha | date)" class="etiqueta izquierda"></Label>

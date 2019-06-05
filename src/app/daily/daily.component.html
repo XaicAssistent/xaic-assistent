@@ -1,20 +1,26 @@
 <StackLayout height="100%">
-    <StackLayout height="10%">
-        <Label text="{{estadosNames[selectedEstado]}} &#xea5b;" (tap)="modalChoseEstado.show()" class="filtro fa"></Label>
+    <StackLayout>
+        <btn_menu-opener height="10%"></btn_menu-opener>
     </StackLayout>
-    <StackLayout height="90%">
+    <StackLayout height="10%">
+        <Label text="{{estadosNames[selectedEstado]}} &#xea5b;" (tap)="modalChoseEstado.show()"
+            class="filtro fa"></Label>
+    </StackLayout>
+    <StackLayout height="80%">
         <ScrollView height="100%">
             <ListView [items]="events" (itemTap)="tapInEvent($event)">
                 <ng-template let-item="item">
                     <StackLayout class="contenedor">
-                        <DockLayout width="100%" height="100%"stretchLastChild="true">
+                        <DockLayout width="100%" height="100%" stretchLastChild="true">
                             <StackLayout class="textos" width="60%" dock="left">
                                 <Label [text]="item.titulo" class="titulo"></Label>
                                 <Label [text]="item.estado.descripcion" class="estado"></Label>
                             </StackLayout>
                             <StackLayout orientation="horizontal" class="iconos" dock="right">
-                                <Label text="&#xe90b;" (tap)="aceptarCita(item.idEvento)" class="fa aceptar ico" *ngIf="item.estado.codigo == 'PA' && userLoged.tipoUsuario == 'empresa' && userLoged.idUserEmprea == item.userEmpresa.idUserEmprea"></Label>
-                                <Label text="&#xe90c;" (tap)="cancelarCita(item.idEvento)" class="fa eliminar ico" *ngIf="item.estado.codigo == 'PA' || item.estado.codigo == 'A' || item.estado.codigo == 'EP'"></Label>
+                                <Label text="&#xe90b;" (tap)="aceptarCita(item.idEvento)" class="fa aceptar ico"
+                                    *ngIf="item.estado.codigo == 'PA' && userLoged.tipoUsuario == 'empresa' && userLoged.idUserEmprea == item.userEmpresa.idUserEmprea"></Label>
+                                <Label text="&#xe90c;" (tap)="cancelarCita(item.idEvento)" class="fa eliminar ico"
+                                    *ngIf="item.estado.codigo == 'PA' || item.estado.codigo == 'A' || item.estado.codigo == 'EP'"></Label>
                             </StackLayout>
                         </DockLayout>
                     </StackLayout>
@@ -27,14 +33,11 @@
 <StackLayout style.zIndex="999" #modalChoseEstado modal size="md" alignment="middle" dismissable="true" duration="100">
     <StackLayout borderRadius="10" rows="*, auto" class="p-t-15 bg-white">
 
-        <DropDown
-            [items]="estadosNames"
-            [(ngModel)]="selectedEstado"
-            class="dropDown"
-        ></DropDown>
+        <DropDown [items]="estadosNames" [(ngModel)]="selectedEstado" class="dropDown"></DropDown>
 
         <WrapLayout class="m-y-2 m-r-15 pull-right">
-            <Label (tap)="buscarEventos(); modalChoseEstado.hide()" text="Aceptar" class="m-y-10 p-10 text-cancel"></Label>
+            <Label (tap)="buscarEventos(); modalChoseEstado.hide()" text="Aceptar"
+                class="m-y-10 p-10 text-cancel"></Label>
         </WrapLayout>
     </StackLayout>
 </StackLayout>
@@ -42,8 +45,10 @@
 <StackLayout style.zIndex="999" #modalCancelarCita modal size="md" alignment="middle" dismissable="true" duration="100">
     <StackLayout borderRadius="10" rows="*, auto" class="p-t-15 bg-white">
 
-        <TextView height="auto" [(ngModel)]="motivoCancelacion" hint="Motivo de cancelación" returnKeyType="send" class="form-input"></TextView>
-        <Button (touch)="onFocus($event)" text="Cancelar cita" class="tipo-user-button add-button" (tap)="confirmacionCancelarCita()"></Button>
+        <TextView height="auto" [(ngModel)]="motivoCancelacion" hint="Motivo de cancelación" returnKeyType="send"
+            class="form-input"></TextView>
+        <Button (touch)="onFocus($event)" text="Cancelar cita" class="tipo-user-button add-button"
+            (tap)="confirmacionCancelarCita()"></Button>
 
         <WrapLayout class="m-y-2 m-r-15 pull-right">
             <Label (tap)="modalCancelarCita.hide()" text="Cancel" class="m-y-10 p-10 text-cancel"></Label>
@@ -61,7 +66,8 @@
             <Slider minValue="10" [maxValue]="maxTime" [(ngModel)]="time" row="0" col="1"></Slider>
             <Label [text]="maxTime" row="0" col="2"></Label>
         </GridLayout>
-        <Button (touch)="onFocus($event)" text="Confirmar cita" class="tipo-user-button add-button" (tap)="confirmacionCita()"></Button>
+        <Button (touch)="onFocus($event)" text="Confirmar cita" class="tipo-user-button add-button"
+            (tap)="confirmacionCita()"></Button>
 
         <WrapLayout class="m-y-2 m-r-15 pull-right">
             <Label (tap)="modalDuracion.hide()" text="Cancel" class="m-y-10 p-10 text-cancel"></Label>

@@ -29,8 +29,9 @@
                     <TextField hint="Apellidos" [(ngModel)]="userData.apellidos" class="form-input"></TextField>
                     <TextField hint="Teléfono" [(ngModel)]="userData.telefono" class="form-input"></TextField>
                     <StackLayout orientation="horizontal">
-                        <TextField hint="Dirección" [(ngModel)]="userData.direccion" class="form-input-direccion"></TextField> 
-                        <Label text="&#xe947;" class="direction-icon fa" (tap)="choseMapDirection()"></Label>   
+                        <TextField hint="Dirección" [(ngModel)]="userData.direccion" class="form-input-direccion">
+                        </TextField>
+                        <Label text="&#xe947;" class="direction-icon fa" (tap)="abrirMapa()"></Label>
                     </StackLayout>
                     <TextField hint="Contraseña" [(ngModel)]="userData.pass" secure="true" class="form-input">
                     </TextField>
@@ -193,6 +194,24 @@
         <Label text="&#xe90d; Galería" (tap)="addPhotoEmpresa('gallery')" class="addphoto-label fa"></Label>
         <WrapLayout class="m-y-2 m-r-15 pull-right">
             <Label text="Aceptar" (tap)="modalAddPhotoEmpresa.hide()" class="m-y-10 p-10 text-cancel"></Label>
+        </WrapLayout>
+    </StackLayout>
+</StackLayout>
+
+<StackLayout style.zIndex="999" #modalOpenMap modal size="md" alignment="middle" dismissable="true" duration="100">
+    <StackLayout borderRadius="10" class="p-t-15 bg-white">
+        <StackLayout orientation="horizontal">
+            <TextField hint="Dirección" class="direction-field" [(ngModel)]="direccion"></TextField>
+            <Label text="&#xe986;" class="search-icon fa" (tap)="direccionRegistro()"></Label>
+        </StackLayout>
+        <StackLayout>
+                <Mapbox #map
+                accessToken="pk.eyJ1IjoieGFpY2Fzc2lzdGFudCIsImEiOiJjandhdDR1ZTIwY2VtNDN0N21venc1aXFsIn0.cBgDtWMKuPQyW6oZ_X5qtA"
+                mapStyle="streets" hideLogo="true" zoomLevel="12" showUserLocation="true" (mapReady)="onMapReady($event)">
+            </Mapbox>
+        </StackLayout>
+        <WrapLayout class="m-y-2 m-r-15 pull-right">
+            <Label text="Aceptar" (tap)="modalOpenMap.hide()" class="m-y-10 p-10 text-cancel"></Label>
         </WrapLayout>
     </StackLayout>
 </StackLayout>

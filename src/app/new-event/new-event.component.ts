@@ -4,10 +4,11 @@ import { TimePicker } from 'tns-core-modules/ui/time-picker/time-picker';
 import { RouterExtensions } from 'nativescript-angular/router';
 import { TouchGestureEventData } from 'tns-core-modules/ui/gestures/gestures';
 import { Event } from '../model/Event';
+import * as app from "tns-core-modules/application";
 import { EventService } from '../services/EventService';
 import { FeedBack } from '../utils/FeedBack';
 import { ModalComponent } from '../modal';
-import { ActivatedRoute } from '@angular/router';
+import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 
 @Component({
   selector: 'ns-new-event',
@@ -23,21 +24,18 @@ export class NewEventComponent implements OnInit {
   @ViewChild("modalfecha") modalfecha: ModalComponent;
   @ViewChild("modalEmpieza") modalEmpieza: ModalComponent;
   @ViewChild("modalAcaba") modalAcaba: ModalComponent;
+
+  sideDrawer = <RadSideDrawer>app.getRootView();
   
   horaInicio: TimePicker;
   horaFin: TimePicker;
 
   newEvent: Event = new Event();
-  date: Date = new Date();
 
-  constructor(private routerExtensions: RouterExtensions, private _eventService: EventService, private route: ActivatedRoute) { }
+  constructor(private routerExtensions: RouterExtensions, private _eventService: EventService) { }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(
-      (params) => {
-        this.date = params['fecha'];
-      }
-    );
+    this.sideDrawer.gesturesEnabled = false;
     this.horaInicio = this.angularhoraInicio.nativeElement;
     this.horaFin = this.angularhoraFin.nativeElement;
   }
@@ -46,7 +44,7 @@ export class NewEventComponent implements OnInit {
     let datePicker = <DatePicker>args.object;
     let now = new Date();
 
-    datePicker.date = this.date;
+    datePicker.date = now;
     datePicker.minDate = now;
     datePicker.maxDate = new Date(now.getFullYear() + 150, 12, 31);
   }

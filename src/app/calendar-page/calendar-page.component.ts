@@ -7,6 +7,8 @@ import { EventService } from "../services/EventService";
 import { FeedBack } from "../utils/FeedBack";
 import { EventMapper } from "../mapper/EventMapper";
 import { Event } from "../model/Event";
+import { RadSideDrawer } from "nativescript-ui-sidedrawer";
+import * as app from "tns-core-modules/application";
 
 @Component({
   selector: 'ns-calendar-page',
@@ -17,22 +19,21 @@ import { Event } from "../model/Event";
 })
 export class CalendarPageComponent implements OnInit {
 
+  sideDrawer = <RadSideDrawer>app.getRootView();
+
   calendarEvents = [];
-  events: Event[] = [];
   modoVista = true;
-  date: Date = new Date();
 
   constructor(private _page: Page, private routerExtensions: RouterExtensions, private _eventService: EventService) {
   }
 
   ngOnInit(): void {
     this._page.actionBarHidden = true;
-
+    this.sideDrawer.gesturesEnabled = true;
     this._eventService.getEvents().subscribe(
       (ok) => {
         if(ok["events"] !== "null"){
-          this.events = EventMapper.eventsJSONtoEvent(ok);
-          this.calendarEvents = EventMapper.eventstoCalendarEvent(this.events);
+          this.calendarEvents = EventMapper.eventstoCalendarEvent(EventMapper.eventsJSONtoEvent(ok));
         }else{
           FeedBack.feedBackError(ok["errorMesage"]);
         }
@@ -42,6 +43,27 @@ export class CalendarPageComponent implements OnInit {
         console.log(erro);
       }
     );
+
+  }
+
+  onDateSelected(args) {
+      console.log("onDateSelected: " + args.date);
+  }
+
+  onDateDeselected(args) {
+      console.log("onDateDeselected: " + args.date);
+  }
+
+  onNavigatedToDate(args) {
+      console.log("onNavigatedToDate: " + args.date);
+  }
+
+  onNavigatingToDateStarted(args) {
+      console.log("onNavigatingToDateStarted: " + args.date);
+  }
+
+  onViewModeChanged(args) {
+      console.log("onViewModeChanged: " + args.newValue);
   }
 
   selectedEvent(args){
@@ -53,31 +75,10 @@ export class CalendarPageComponent implements OnInit {
     evento.periodo.empiezaMinuto = event.startDate.getMinutes();
     evento.periodo.acabaHora = event.endDate.getHours();
     evento.periodo.acabaMinuto = event.endDate.getMinutes();
-    
-    let id = (this.events.filter(eve => eve.titulo == event.title && eve.fecha.getDate() == evento.fecha.getDate() && eve.fecha.getFullYear() == evento.fecha.getFullYear() && eve.fecha.getMonth() == evento.fecha.getMonth() && eve.periodo.empiezaHora == evento.periodo.empiezaHora && eve.periodo.empiezaMinuto && evento.periodo.empiezaMinuto)[0]).idEvento;
-    
-    var params = {
-      queryParams: {
-        "idEvento" : id,
-        "rutaAnterior" : "calendar"
-      },
-      clearHistory : true
-    }
-    this.routerExtensions.navigate(["/infoDaily"], params);
+    console.log(evento);
   }
 
   addPersonalEvent(){
-    var params = {
-      queryParams: {
-        "fecha" : this.date
-      },
-      clearHistory : true
-    }
-    this.routerExtensions.navigate(["/newEvent"], params);
-  }
-
-  onDateSelected(args) {
-    let now = new Date();
-    this.date = args.date < now ? now : args.date;
+    this.routerExtensions.navigateByUrl("newEvent");
   }
 }

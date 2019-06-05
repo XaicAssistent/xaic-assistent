@@ -11,7 +11,6 @@ export class Event{
     titulo: string;
     descripcion: string;
     fecha: Date;
-    location: string;
     periodo: Periodo = new Periodo();
     estado: EstadoEvento = new EstadoEvento();
     motivoCancelacion: string;

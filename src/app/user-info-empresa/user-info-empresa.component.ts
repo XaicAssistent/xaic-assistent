@@ -2,11 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { UserEmpresa } from '../model/UserEmpresa';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/UserService';
+import { UserData } from '../model/UserData';
 import { Periodo } from '../model/Perido';
 import { Page, Color } from 'tns-core-modules/ui/page/page';
 import { LocalNotifications } from "nativescript-local-notifications";
 import { RouterExtensions } from 'nativescript-angular/router';
 import * as email from "nativescript-email";
+import * as app from "tns-core-modules/application";
+import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 
 @Component({
   selector: 'user-info-empresa',
@@ -17,25 +20,28 @@ import * as email from "nativescript-email";
 })
 export class UserInfoEmpresaComponent implements OnInit {
 
+  sideDrawer = <RadSideDrawer>app.getRootView();
+
   id;
   userEmpresa: UserEmpresa = new UserEmpresa();
 
 
-  constructor(private route: ActivatedRoute, private _userService: UserService,private page: Page,private routerExtensions: RouterExtensions) { }
+  constructor(private route: ActivatedRoute, private _userService: UserService,private routerExtensions: RouterExtensions) { }
 
   ngOnInit() {
+    this.sideDrawer.gesturesEnabled = false;
     this.route.queryParams.subscribe((params) => {
       this.id = params["id-selected"];
     });
-    this.page.actionBarHidden = true;
+    
 
     this.getInfoUserEmpresa();
+
   }
 
   getInfoUserEmpresa() {
     this._userService.getInfoUserEmpresa(this.id).subscribe(
       (ok) => {
-        console.log(ok);
 
         var userData = ok["userData"];
 
@@ -54,23 +60,20 @@ export class UserInfoEmpresaComponent implements OnInit {
         this.userEmpresa.category = category.Nombre;
 
         ok["userPeriodos"].forEach((periodo)=>{
-          var newPeriodo: Periodo = new Periodo();
-          newPeriodo.dia = periodo.Dia;
+           var newPeriodo: Periodo = new Periodo();
+           newPeriodo.dia = periodo.Dia;
           newPeriodo.empiezaHora = periodo.Empieza;
           newPeriodo.acabaHora = periodo.Acaba;
           this.userEmpresa.periodos.push(newPeriodo);
-        });
-        
-        console.log(this.userEmpresa);
+         });
+         
       },
       (err) => {
-        console.log("ERROR PMV");
         console.log(err);
       });
   }
 
 pedirCita(){
-
   LocalNotifications.schedule([{
     id: 1,
     title: 'The title',
@@ -96,19 +99,22 @@ pedirCita(){
         console.log("scheduling error: " + error);
       }
   )
-
 }
 
 openEmail(){
   email.compose({
-    //falta coger la dirección del usuario
     to: ['movip88@gmail.com'],
+}).then(
+  function() {
+    console.log("Email composer closed");
+  }, function(err) {
+    console.log("Error: " + err);
   });
 }
 
 
 openMap(){
-  this.routerExtensions.navigateByUrl("/route");
+this.routerExtensions.navigateByUrl("/route");
 }
 
 }

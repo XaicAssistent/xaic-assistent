@@ -32,7 +32,6 @@ export class UserMapper {
         user.foto = usu.Foto;
         user.category.nombre = usu["Category.nombre"];
         user.idUserEmprea = usu["UserEmpresa.IdUserEmpresa"];
-        user.direccionFija = <boolean>usu["UserEmpresa.DrireccionFija"];
 
         return user;
     }

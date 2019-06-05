@@ -5,7 +5,6 @@ import { RouterExtensions } from "nativescript-angular/router";
 import * as app from "tns-core-modules/application";
 import { filter } from "rxjs/operators";
 import { UserService } from "./services/UserService";
-import { UserLoged } from "./utils/UserLoged";
 
 @Component({
     selector: "ns-app",
@@ -40,19 +39,6 @@ export class AppComponent {
 
     onNavItemTap(navItemRoute: string): void {
         this.routerExtensions.navigate([navItemRoute], {
-            transition: {
-                name: "fade"
-            },
-            clearHistory : true
-        });
-
-        const sideDrawer = <RadSideDrawer>app.getRootView();
-        sideDrawer.closeDrawer();
-    }
-
-    closeSesion(){
-        UserLoged.getInstance().deleteUserData();
-        this.routerExtensions.navigate(["/home"], {
             transition: {
                 name: "fade"
             },

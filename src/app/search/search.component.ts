@@ -11,7 +11,9 @@ import { TouchGestureEventData } from 'tns-core-modules/ui/gestures/gestures';
 import { CategoryService } from '../services/CategoryService';
 import { CategoryMapper } from '../mapper/CategoryMapper';
 import { Category } from '../model/Category';
+import * as app from "tns-core-modules/application";
 import { ModalComponent } from '../modal';
+import { RadSideDrawer } from 'nativescript-ui-sidedrawer';
 declare var android;
 
 @Component({
@@ -24,6 +26,8 @@ declare var android;
 export class SearchComponent implements OnInit {
   @ViewChild("modalChoseCategory") modalChoseCategory: ModalComponent;
 
+  sideDrawer = <RadSideDrawer>app.getRootView();
+
   allUsersEmpresa: UserEmpresa[] = [];
 
   selectedCategory = 0;
@@ -34,6 +38,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
     this._page.actionBarHidden = true;
+    this.sideDrawer.gesturesEnabled = true;
 
     this._userService.getAllUserEmpresa().subscribe(
       (ok) => {
