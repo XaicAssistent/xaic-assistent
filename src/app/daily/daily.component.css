@@ -1,0 +1,87 @@
+.tipo-user-button{
+    margin: 20;
+    width: 50%;
+    margin-left: 25;
+    margin-right: 15;
+    background-color: #068106;
+    color: white;
+}
+
+dropDown{
+    text-align: center;
+    font-size: 19;
+    padding-bottom: 3; 
+    width: 80%;
+}
+
+.bg-white {
+    background-color: #ffffff;
+    color: #777777;
+}
+
+.text-cancel{
+    color: rgba(26, 158, 81, 0.644);
+}
+
+.filtro{
+    height: 80%;
+    margin: 50px;
+    text-align: center;
+    font-size: 25;
+}
+
+.contenedor{
+    height: 250px;
+}
+
+.ico{
+    vertical-align: middle;
+    font-size: 50; 
+    text-align: left;
+    margin-left: 25px;
+}
+
+.aceptar{
+    color: #068106;
+}
+
+.eliminar{
+    color: red;
+}
+
+.titulo{
+    vertical-align: middle;
+    margin: 15px;
+    font-size: 22;
+    color: black;
+}
+
+.estado{
+    vertical-align: middle;
+    margin: 15px;
+}
+
+.textos{
+    margin-left: 5%;
+}
+
+.estado{
+    font-size: 18;
+}
+
+.form-input {
+    margin-left: 20;
+    margin-right: 20;
+    margin-top: 15;
+    padding: 10;
+    placeholder-color:rgba(207, 207, 207, 0.6);
+    background-color: rgba(241, 241, 241, 0.6);
+    font-size: 14;
+    margin-bottom: 50px;
+}
+
+.etiqueta-modal{
+    font-size: 20;
+    text-align: center;
+    color: rgba(26, 158, 81, 0.644);
+}

@@ -1,0 +1,47 @@
+<StackLayout>
+    <StackLayout height="10%">
+        <Label text="{{selectedCategory == 0 ? 'Todas las categorias' : categorys[selectedCategory - 1].nombre}} &#xea5b;" (tap)="choseCategory()" class="filtro fa"></Label>
+    </StackLayout>
+    
+    <ScrollView height="90%">
+        <ListView [items]="allUsersEmpresa" (itemTap)="onItemTap($event)">
+            <ng-template let-item="item">
+                <StackLayout class="usuario" orientation="horizontal">
+                    <GridLayout width="350px" rows="auto" columns="*">
+                        <ActivityIndicator
+                            class="activity-indicator"
+                            row="0"
+                            col="0"
+                            busy="true"
+                            width="50"
+                            height="50"
+                            class="activity-indicator"
+                        ></ActivityIndicator>
+                        <Image class="profilePicture" [src]="item.foto" stretch="aspectFit"></Image>
+                    </GridLayout>
+                    <StackLayout>
+                        <label [text]="item.nombre + ' ' + item.apellidos"></label>
+                        <label class="categoria" [text]="item.category.nombre"></label>
+                        <StackLayout orientation="horizontal">
+                            <Label col="0" text="&#xe953;" class="fa" [nsRouterLink]="['/newEventEmpresa', item.idUser]"></Label>
+                            <Label col="0" text="&#xe942;" class="fa" (tap)="llamar(item.telefono)"></Label>
+                            <Label col="0" text="&#xe970;" class="fa"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </ng-template>
+        </ListView>
+    </ScrollView>
+</StackLayout>
+
+<StackLayout style.zIndex="999" #modalChoseCategory modal size="md" alignment="middle" dismissable="true"
+    duration="100">
+    <StackLayout borderRadius="10" rows="*, auto" class="p-t-15 bg-white">
+
+        <DropDown [items]="categorysNames" [(ngModel)]="selectedCategory" class="dropDown"></DropDown>
+
+        <WrapLayout class="m-y-2 m-r-15 pull-right">
+            <Label (tap)="categorySelected()" text="Aceptar" class="m-y-10 p-10 text-cancel"></Label>
+        </WrapLayout>
+    </StackLayout>
+</StackLayout>

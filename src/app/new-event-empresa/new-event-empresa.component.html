@@ -1,0 +1,57 @@
+<StackLayout>
+    <ScrollView height="80%">
+        <StackLayout>
+            <StackLayout orientation="horizontal" class="cabecera">
+                    <StackLayout>
+                        <label [text]="userEmpresa.nombre + ' ' + userEmpresa.apellidos"></label>
+                        <label class="categoria" [text]="userEmpresa.category.nombre"></label>
+                    </StackLayout>
+                    <GridLayout width="40%" rows="auto" columns="*">
+                        <ActivityIndicator
+                            class="activity-indicator"
+                            row="0"
+                            col="0"
+                            busy="true"
+                            width="50"
+                            height="50"
+                            class="activity-indicator"
+                        ></ActivityIndicator>
+                        <Image class="profilePicture" [src]="userEmpresa.foto" stretch="aspectFit"></Image>
+                    </GridLayout>
+                </StackLayout>
+                <StackLayout>
+                    <TextField hint="Titulo" [(ngModel)]="newEvent.titulo" class="form-input"></TextField>
+                    <TextView height="auto" [(ngModel)]="newEvent.descripcion" hint="Descripción" returnKeyType="send" class="form-input"></TextView>
+                    <TextField hint="Dirección" *ngIf="userEmpresa.direccionFija == 1" [(ngModel)]="newEvent.location" class="form-input"></TextField>
+                    <StackLayout orientation="horizontal" class="field" (tap)="modalfecha.show()">
+                        <Label text="Fecha" class="etiqueta derecha"></Label>
+                        <Label [text]="(newEvent.fecha | date)" class="etiqueta izquierda"></Label>
+                        <Label text="&#xe90a;" class="fa etiqueta"></Label>
+                    </StackLayout>
+                    <Label text="Escoje la hora" class="etiqueta"></Label>
+                    <Label *ngIf="periodos.length == 0" text="No hay horas disponibles para este dia" class="etiqueta"></Label>
+                    <DropDown *ngIf="periodos.length > 0"
+                        [items]="horasDisponibles"
+                        [(ngModel)]="selectedHorario"
+                        class="dropDown"
+                    ></DropDown>
+                </StackLayout>
+        </StackLayout>
+    </ScrollView>
+    <StackLayout>
+        <Button (touch)="onFocus($event)" text="Añadir evento" (tap)="addEvent()" class="form-button"></Button>
+    </StackLayout>
+</StackLayout>
+
+<StackLayout style.zIndex="999" #modalfecha modal size="md" alignment="middle" dismissable="true" duration="100">
+    <StackLayout borderRadius="10" rows="*, auto" class="p-t-15 bg-white">
+
+        <Label text="Fecha" class="etiqueta-modal"></Label>
+        
+        <DatePicker (loaded)="onPickerLoaded($event)" (dateChange)="onDateChanged($event)" height="400px"></DatePicker>
+
+        <WrapLayout class="m-y-2 m-r-15 pull-right">
+            <Label (tap)="modalfecha .hide()" text="Aceptar" class="m-y-10 p-10 text-cancel"></Label>
+        </WrapLayout>
+    </StackLayout>
+</StackLayout>

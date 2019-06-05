@@ -4,9 +4,10 @@ import { Periodo } from "./Perido";
 import { TypeUser } from "../utils/TypeUser";
 
 export class UserEmpresa extends UserData{
+    idUserEmprea: number;
     direccionFija: boolean;
     fotosEmpresa: string[];
-    category: Category;
+    category: Category = new Category();
     periodos: Periodo[];
 
     constructor();
@@ -22,5 +23,15 @@ export class UserEmpresa extends UserData{
         this.pass = user && user.pass || "";
         this.tipoUsuario = TypeUser.Empresa;
         this.periodos = [];
-    }   
+    }
+    
+    public passData(user: UserData){
+        this.gmail = user.gmail;
+        this.nombre = user.nombre;
+        this.apellidos = user.apellidos;
+        this.telefono = user.telefono;
+        this.direccion = user.direccion;
+        this.foto = user.foto;
+        this.pass = user.pass;
+    }
 }

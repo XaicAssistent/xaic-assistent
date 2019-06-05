@@ -1,0 +1,81 @@
+.form-button {
+    border-radius: 200;
+    background: linear-gradient(to left, #35d485, #068106);
+    color: white;
+    margin: 20;
+}
+
+.profilePicture{
+    height: 400px;
+    width: 400px;
+    border-color: rgba(26, 158, 81, 0.644);
+    border-width: 2px;
+    border-radius: 1000px;
+    margin: 20;
+    margin-left: 30;
+}
+
+.cabecera label{
+    font-size: 22;
+    text-align: center;
+    margin: 50px;
+}
+
+.categoria{
+    color: rgba(26, 158, 81, 0.644);
+}
+
+.activity-indicator {
+    color: rgba(26, 158, 81, 0.644);
+}
+
+.form-input {
+    margin-left: 20;
+    margin-right: 20;
+    margin-top: 15;
+    padding: 10;
+    placeholder-color:rgba(207, 207, 207, 0.6);
+    background-color: rgba(241, 241, 241, 0.6);
+    font-size: 14;
+    margin-bottom: 50px;
+}
+
+.field{
+    margin-left: 20;
+    margin-right: 20;
+    margin-top: 15;
+    padding: 10;
+}
+
+.izquierda{
+    margin-left: 40%;
+}
+
+.bg-white {
+    background-color: #ffffff;
+    color: #777777;
+}
+  
+.text-cancel{
+    color: rgba(26, 158, 81, 0.644);
+}
+
+.etiqueta-modal{
+    font-size: 20;
+    text-align: center;
+    color: rgba(26, 158, 81, 0.644);
+} 
+
+dropDown{
+    text-align: center;
+    font-size: 19;
+    padding-bottom: 3; 
+    width: 60%;
+    margin-top: 50px;
+}
+
+.etiqueta{
+    margin-top: 50px;
+    text-align: center;
+    font-size: 19;
+}

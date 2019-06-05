@@ -1,0 +1,19 @@
+<StackLayout>
+	<label [text]="modoVista ? '&#xe901;' : '&#xe902;'" (tap)=" modoVista = !modoVista" class="fa tipoVista"></label>
+	<RadCalendar
+	[eventSource]="calendarEvents" 
+	
+	eventsViewMode="Inline" 
+	selectionMode="Single" 
+	[viewMode]="modoVista ? 'Day' : 'Month'" 
+	transitionMode="Stack"
+	locale="es-ES" 
+	
+	(inlineEventSelected)="selectedEvent($event)"
+	(dayViewEventSelected)="selectedEvent($event)"
+	(dateSelected)="onDateSelected($event)" 
+></RadCalendar>
+</StackLayout>
+<StackLayout class="float-btn-container">
+	<btn_add-event (click)="addPersonalEvent()"></btn_add-event>
+</StackLayout>

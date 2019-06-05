@@ -1,0 +1,69 @@
+<ActionBar title="Nuevo evento">
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="routerExtensions.navigateByUrl('calendar', { clearHistory: true });"></NavigationButton>
+</ActionBar>
+<StackLayout>
+    <ScrollView height="80%">
+        <StackLayout>
+            <TextField hint="Titulo" [(ngModel)]="newEvent.titulo" class="form-input"></TextField>
+            <TextView height="auto" [(ngModel)]="newEvent.descripcion" hint="Descripción" returnKeyType="send" class="form-input"></TextView>
+            <TextField hint="Dirección" [(ngModel)]="newEvent.location" class="form-input"></TextField>
+            <StackLayout orientation="horizontal" class="field" (tap)="modalfecha.show()">
+                <Label text="Fecha" class="etiqueta derecha"></Label>
+                <Label [text]="(newEvent.fecha | date)" class="etiqueta izquierda"></Label>
+                <Label text="  &#xe90a;" class="fa"></Label>
+            </StackLayout>
+            <StackLayout orientation="horizontal" class="field" (tap)="modalEmpieza.show()">
+                <Label text="Inicia" class="etiqueta derecha"></Label>
+                <Label [text]="newEvent.periodo.empiezaHora + ':' + newEvent.periodo.empiezaMinuto" class="etiqueta izquierda"></Label>
+                <Label text="  &#xe90a;" class="fa"></Label>
+            </StackLayout>
+            <StackLayout orientation="horizontal" class="field" (tap)="modalAcaba.show()">
+                <Label text="Acaba" class="etiqueta derecha"></Label>
+                <Label [text]="newEvent.periodo.acabaHora + ':' + newEvent.periodo.acabaMinuto" class="etiqueta izquierda"></Label>
+                <Label text="  &#xe90a;" class="fa"></Label>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+    <StackLayout>
+        <Button (touch)="onFocus($event)" text="Añadir evento" (tap)="addEvent()" class="form-button"></Button>
+    </StackLayout>
+</StackLayout>
+
+<StackLayout style.zIndex="999" #modalfecha modal size="md" alignment="middle" dismissable="true" duration="100">
+    <StackLayout borderRadius="10" rows="*, auto" class="p-t-15 bg-white">
+
+        <Label text="Fecha" class="etiqueta-modal"></Label>
+        
+        <DatePicker (loaded)="onPickerLoaded($event)" (dateChange)="onDateChanged($event)" height="400px"></DatePicker>
+
+        <WrapLayout class="m-y-2 m-r-15 pull-right">
+            <Label (tap)="modalfecha .hide()" text="Aceptar" class="m-y-10 p-10 text-cancel"></Label>
+        </WrapLayout>
+    </StackLayout>
+</StackLayout>
+
+<StackLayout style.zIndex="999" #modalEmpieza modal size="md" alignment="middle" dismissable="true" duration="100">
+    <StackLayout borderRadius="10" rows="*, auto" class="p-t-15 bg-white">
+
+        <Label text="Empieza" class="etiqueta-modal"></Label>
+
+        <TimePicker #horaInicio (timeChange)="onTimeChangedInicio($event)" height="400px"></TimePicker>        
+
+        <WrapLayout class="m-y-2 m-r-15 pull-right">
+            <Label (tap)="modalEmpieza.hide()" text="Aceptar" class="m-y-10 p-10 text-cancel"></Label>
+        </WrapLayout>
+    </StackLayout>
+</StackLayout>
+
+<StackLayout style.zIndex="999" #modalAcaba modal size="md" alignment="middle" dismissable="true" duration="100">
+    <StackLayout borderRadius="10" rows="*, auto" class="p-t-15 bg-white">
+
+        <Label text="Acaba" class="etiqueta-modal"></Label>
+
+        <TimePicker #horaFin (timeChange)="onTimeChangedFin($event)" height="400px"></TimePicker>
+
+        <WrapLayout class="m-y-2 m-r-15 pull-right">
+            <Label (tap)="modalAcaba.hide()" text="Aceptar" class="m-y-10 p-10 text-cancel"></Label>
+        </WrapLayout>
+    </StackLayout>
+</StackLayout>

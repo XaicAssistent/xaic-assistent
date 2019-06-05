@@ -1,2 +1,47 @@
-<!-- https://docs.nativescript.org/angular/core-concepts/angular-navigation.html#page-router-outlet -->
-<page-router-outlet></page-router-outlet>
+<RadSideDrawer [drawerTransition]="sideDrawerTransition">
+    <GridLayout tkDrawerContent rows="auto, *" class="sidedrawer sidedrawer-left">
+        <StackLayout row="0" class="sidedrawer-header">
+            <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
+            <Label class="sidedrawer-header-brand" text="User Name"></Label>
+            <Label class="footnote" text="username@mail.com"></Label>
+        </StackLayout>
+    
+        <ScrollView row="1">
+            <StackLayout class="sidedrawer-content">
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/calendar')" (tap)="onNavItemTap('/calendar')">
+                    <Label col="0" text="&#xe953;" class="fa"></Label>
+                    <Label col="1" text="Calendario" class="p-r-10"></Label>
+                </GridLayout>
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/search')" (tap)="onNavItemTap('/search')">
+                    <Label col="0" text="&#xe986;" class="fa"></Label>
+                    <Label col="1" text="Buscador" class="p-r-10"></Label>
+                </GridLayout>
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/route')" (tap)="onNavItemTap('/route')">
+                    <Label col="0" text="&#xe947;" class="fa"></Label>
+                    <Label col="1" text="Tu recorrido" class="p-r-10"></Label>
+                </GridLayout>
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/daily')" (tap)="onNavItemTap('/daily')">
+                    <Label col="0" text="&#xe922;" class="fa"></Label>
+                    <Label col="1" text="Citas por estado" class="p-r-10"></Label>
+                </GridLayout>
+    
+                <StackLayout class="hr-light"></StackLayout>
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/settings')" (tap)="onNavItemTap('/settings')">
+                    <Label col="0" text="&#xe994;" class="fa"></Label>
+                    <Label col="1" text="Ajustes" class="p-r-10"></Label>
+                </GridLayout>
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/home')" (tap)="closeSesion()">
+                    <Label col="0" text="&#xea14;" class="fa"></Label>
+                    <Label col="1" text="Cerrar sesión" class="p-r-10"></Label>
+                </GridLayout>
+            </StackLayout>
+        </ScrollView>
+    </GridLayout>
+
+    <page-router-outlet tkMainContent class="page page-content"></page-router-outlet>
+</RadSideDrawer>

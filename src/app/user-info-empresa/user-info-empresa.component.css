@@ -1,0 +1,44 @@
+.profilePicture {
+    height: 400px;
+    width: 400px;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 1000px;
+    /*background-image: url("res://user_pic");
+    background-repeat: no-repeat;
+    background-position: center;*/
+    margin-top: 4%;
+    margin-left: 20%;
+    }
+    
+    .info{
+        margin-top: 5%;
+        margin-left: 2%;
+    }
+    
+    .labels {
+        text-align: center;
+        font-size: 18;
+       padding-top: 10;
+       padding-bottom: 30;
+    }
+    
+    .header {
+        margin-top: 5%;
+        width: 100%;
+        height: 25%;
+    }
+    
+    .buttons {
+        color: white;
+        background-color: rgba(26, 158, 81, 1);;
+    }
+    
+    .btn-pedir_cita{
+        margin: 20;
+      margin-top: 80%;
+      border-radius: 200;
+      background: linear-gradient(to left, #35d485, #068106);
+      color: white;
+      z-index: 10;
+    }

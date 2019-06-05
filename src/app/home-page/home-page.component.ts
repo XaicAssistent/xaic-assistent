@@ -17,13 +17,19 @@ import { ListPicker } from "tns-core-modules/ui/list-picker";
 import { UserEmpresa } from '../model/UserEmpresa';
 import { Periodo } from '../model/Perido';
 import { TimePicker } from 'tns-core-modules/ui/time-picker/time-picker';
+import { DatePicker } from 'tns-core-modules/ui/date-picker/date-picker';
+import * as camera from "nativescript-camera";
+import { CameraService } from '../services/Camera.service';
+import * as appSettings from "tns-core-modules/application-settings";
+import { UserMapper } from '../mapper/UserMapper';
+import { UserLoged } from '../utils/UserLoged';
 
 @Component({
   selector: 'ns-home-page',
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css'],
   moduleId: module.id,
-  providers: [UserService, CategoryService]
+  providers: [UserService, CategoryService, CameraService]
 })
 export class HomePageComponent implements OnInit {
   @ViewChild("register") angularRegister: ElementRef;
@@ -32,12 +38,15 @@ export class HomePageComponent implements OnInit {
   @ViewChild("logo") logoRef: ElementRef;
   @ViewChild("login") angularLogin: ElementRef;
   @ViewChild("content") angularContent: ElementRef;
+  @ViewChild("cabecera") angularCabecera: ElementRef;
   @ViewChild("horaInicio") angularhoraInicio: ElementRef;
   @ViewChild("horaFin") angularhoraFin: ElementRef;
   @ViewChild("modalNewCategory") modalNewCategory: ModalComponent;
   @ViewChild("modalChoseCategory") modalChoseCategory: ModalComponent;
   @ViewChild("modalNewPeriodo") modalNewPeriodo: ModalComponent;
   @ViewChild("modalAddHorario") modalAddHorario: ModalComponent;
+  @ViewChild("modalVerificarCodigo") modalVerificarCodigo: ModalComponent;
+  @ViewChild("modalAddPhotoEmpresa") modalAddPhotoEmpresa: ModalComponent;
 
   loginLayout: View;
   regsiterLayout: View;
@@ -45,6 +54,7 @@ export class HomePageComponent implements OnInit {
   circleItem: View;
   logoItem: View;
   content: View;
+  cabecera: View;
   horaInicio: TimePicker;
   horaFin: TimePicker;
 
@@ -72,12 +82,17 @@ export class HomePageComponent implements OnInit {
 
   periodos: Periodo[] = [];
 
+  imagen:any;
+
   email = "";
   pass = "";
+  codigo = "";
 
   newCategory: Category = new Category();
 
-  constructor(private _page: Page, private _userService: UserService, private _categoryService: CategoryService,private routerExtensions: RouterExtensions, private renderer: Renderer2) {
+  imageSlider: String[] = ["https://lorempixel.com/800/600/city/2/", "https://lorempixel.com/800/600/nightlife/6/", "https://lorempixel.com/800/600/nightlife/5/"];
+
+  constructor(private _page: Page, private _cameraService : CameraService, private _userService: UserService, private _categoryService: CategoryService, private routerExtensions: RouterExtensions, private renderer: Renderer2) {
   }
 
   ngOnInit(): void {
@@ -94,6 +109,7 @@ export class HomePageComponent implements OnInit {
     this.circleItem = this.circleRef.nativeElement;
     this.logoItem = this.logoRef.nativeElement;
     this.content = this.angularContent.nativeElement;
+    this.cabecera = this.angularCabecera.nativeElement;
 
     this.horaInicio = this.angularhoraInicio.nativeElement;
     this.horaFin = this.angularhoraFin.nativeElement;
@@ -102,6 +118,10 @@ export class HomePageComponent implements OnInit {
     this.regsiterLayout.scaleX = 0;
     this.circleItem.scaleX = 0;
     this.circleItem.scaleY = 0;
+
+    if(appSettings.getString("tokenUser", "") != ""){
+      this.irACalendar();
+    }
   }
   
   choseTypeUser(){
@@ -110,11 +130,6 @@ export class HomePageComponent implements OnInit {
       actions: Object.keys(TypeUser)
     }).then(result => {
       this.tipoUsuario = TypeUser[result];
-      if(this.tipoUsuario == TypeUser.Empresa){
-        this.userEmpresa = new UserEmpresa(this.userData);
-      }else if(this.tipoUsuario == TypeUser.Normal){
-        this.userNormal = new UserNormal(this.userData);
-      }
      });
   }
 
@@ -141,6 +156,94 @@ export class HomePageComponent implements OnInit {
     }else{
       FeedBack.feedBackError("No pudes poner un perido dentro de otro...");
     }
+  }
+
+  addPhotoEmpresaCamera() {
+    let options: camera.CameraOptions = {
+      width: 200,
+      height: 200,
+      keepAspectRatio: true,
+      saveToGallery: false,
+      cameraFacing: "front"
+    };
+
+    this._cameraService.pickPhoto(options).then(
+      (resp) => {
+        this.addPhotoEmpresaToUser(resp);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  choseMapDirection(){
+    this.routerExtensions.navigateByUrl("route");
+  }
+
+  addPhotoEmpresaGallery() {
+    this._cameraService.selectGaleryPhoto().then(
+      (resp) => {
+        this.addPhotoEmpresaToUser(resp);
+      }
+    );
+  }
+
+  addPhotoEmpresaToUser(resp) {
+    console.log("foto añadida a array: "+resp["base64"]);
+    this.userEmpresa.fotosEmpresa.push(resp["base64"]);
+    this.imageSlider.push(resp["image"]);
+    this.modalAddPhotoEmpresa.hide();
+  }
+
+  selectPhoto(){
+    dialogs.action({
+      message: "Escoge una opcion",
+      cancelButtonText: "Cancelar",
+      actions: ["Camara", "Galeria"]
+    }).then(result => {
+      result == "Camara" ? this.pickPhoto() : this.selectGaleryPhoto();
+    });
+  }
+
+  pickPhoto(){
+    let options:camera.CameraOptions = {
+      width: 200,
+      height: 200,
+      keepAspectRatio: true,
+      saveToGallery: false,
+      cameraFacing: "front"
+    };
+
+    this._cameraService.pickPhoto(options).then(
+      (resp) => {
+        this.ponerFoto(resp);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  selectGaleryPhoto(){
+    this._cameraService.selectGaleryPhoto().then(
+      (resp) => {
+        this.ponerFoto(resp);
+      }
+    );
+  }
+
+  ponerFoto(resp){
+    if(this.tipoUsuario == undefined){
+      this.userData.foto = resp["base64"];
+    }else{
+      if(this.tipoUsuario == "empresa") { 
+        this.userEmpresa.foto = resp["base64"];
+      }else{
+        this.userNormal.foto = resp["base64"];
+      }
+    }
+    this.imagen = resp["image"];
   }
 
   searchPeriods(){
@@ -197,6 +300,39 @@ export class HomePageComponent implements OnInit {
     this.searchPeriods();
   }
 
+  irACalendar(){
+    this._userService.getUser().subscribe(
+      (ok) => {
+        if(ok["user"] !== "null"){
+          UserLoged.getInstance().setUserLoged(UserMapper.userJSONToUserData(ok['user'], ok['userTipoData']));
+          this.content.height = 0;
+          this.cabecera.height = 1000;
+          this.logoItem.animate({
+            translate: { x: 0, y: 300 },
+            scale: { x: 1.8, y: 1.8},
+            duration: 400
+          }).then(() => {
+            this.circleItem.translateY = 200;
+            this.circleItem.animate({
+              scale: { x: 15, y: 15 },
+              duration: 400,
+            }).then(() => {
+              this.routerExtensions.navigateByUrl("calendar", { clearHistory: true });
+              this.formSubmitted = false;
+            });
+          });
+        }else{
+          this.formSubmitted = false;
+          FeedBack.feedBackError(ok["errorMesage"]);
+        }
+      },
+      (erro) => {
+        console.log("ERROR PMV");
+        console.log(erro);
+      }
+    );
+  }
+
   onButtonTap(){
     this.formSubmitted = true;
     
@@ -204,23 +340,9 @@ export class HomePageComponent implements OnInit {
       this._userService.logUser(this.email, this.pass).subscribe(
         (ok) => {
           if(ok["token"] !== "null"){
-            //afegir al app settings
+            appSettings.setString("tokenUser", ok["token"]);
             this.navigating = true;
-  
-            this.logoItem.animate({
-              translate: { x: 0, y: 300 },
-              scale: { x: 1.8, y: 1.8},
-              duration: 400
-            }).then(() => {
-              this.circleItem.translateY = 200;
-              this.circleItem.animate({
-                scale: { x: 15, y: 15 },
-                duration: 400,
-              }).then(() => {
-                this.routerExtensions.navigateByUrl("register", { clearHistory: true });
-                this.formSubmitted = false;
-              });
-            });
+            this.irACalendar();
           }else{
             this.formSubmitted = false;
             FeedBack.feedBackError(ok["errorMesage"]);
@@ -233,8 +355,52 @@ export class HomePageComponent implements OnInit {
         }
       );
     }else{
-      console.log(this.tipoUsuario == TypeUser.Empresa ? this.userEmpresa : this.userNormal);
+      if(this.tipoUsuario == TypeUser.Empresa){
+        this.userEmpresa.passData(this.userData);
+        this.userEmpresa.direccionFija = this.selectedIndex == 0;
+      }else if(this.tipoUsuario == TypeUser.Normal){
+        this.userNormal.passData(this.userData);
+      }
+
+      this._userService.registerUser(this.tipoUsuario == TypeUser.Empresa ? this.userEmpresa : this.userNormal).subscribe(
+        (ok) =>{
+          if(ok["idUser"] !== "null"){
+            this.formSubmitted = false;
+            this.modalVerificarCodigo.show();
+          }else{
+            this.formSubmitted = false;
+            FeedBack.feedBackError(ok["errorMesage"]);
+          }
+        },
+        (erro) => {
+          console.log("ERROR PMV");
+          console.log(erro);
+        }
+      );
     }
+  }
+
+  verificarCodigo(){
+    this._userService.verificarCodigo(this.email, this.codigo).subscribe(
+      (ok) => {
+        if(<boolean>ok["code"] == true){
+          this.modalVerificarCodigo.hide();
+          FeedBack.feedBackSucces("Cuenta verificada Corectamente");
+          this.setToLogin();
+        }else{
+          FeedBack.feedBackError(ok["errorMesage"]);
+        }
+      },
+      (erro) => {
+        console.log("ERROR PMV");
+        console.log(erro);
+      }
+    );
+  }
+
+  categorySelected(){
+    this.userEmpresa.category = this.categorys[this.selectedCategory - 1];
+    this.modalChoseCategory.hide()
   }
 
   addCategory(){
@@ -256,6 +422,22 @@ export class HomePageComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  onDateChanged(args) {
+    this.userNormal.fechaNacimiento = args.value;
+    this.userNormal.fechaNacimiento.setHours(2);
+  }
+
+  onPickerLoaded(args) {
+    let datePicker = <DatePicker>args.object;
+    let now = new Date();
+
+    datePicker.year = now.getFullYear() - 31;
+    datePicker.month = 8;
+    datePicker.day = 8;
+    datePicker.minDate = new Date(now.getFullYear() - 100, 0, 0);
+    datePicker.maxDate = new Date(now.getFullYear() - 6, 12, 31);
   }
 
   onFocus(args: TouchGestureEventData) {

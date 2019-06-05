@@ -1,0 +1,28 @@
+<StackLayout>
+    <StackLayout orientation="horizontal" class="header">
+        <StackLayout class="info">
+            <Label [text]="userEmpresa.nombre+' '+userEmpresa.apellidos" class="labels"></Label>
+            <Label [text]="userEmpresa.category" class="labels" style="color:rgba(26, 158, 81, 1);"></Label>
+        </StackLayout>
+        <StackLayout>
+            <Image class="profilePicture" [src]="userEmpresa.foto" stretch="aspectFit"></Image>
+        </StackLayout>
+    </StackLayout>
+    <StackLayout orientation="horizontal">
+        <Button text="&#xe947; MI UBICACIÓN" width="50%" class="buttons fa" (tap)="openMap()"></Button>
+        <Button text="&#xe90e; ENVIAME UN CORREO" width="50%" class="buttons fa" (tap)="openEmail()"></Button>
+    </StackLayout>
+    <!--<StackLayout>
+        <Label class="labels" text="HORARIOS"></Label>
+        <StackLayout>
+        <GridLayout columns="125, 125" rows="*" *ngFor="let perido of userEmpresa.periodos">
+            <Label [text]="perido.empiezaHora" row="0" col="0"></Label>
+            <Label [text]="perido.acabaHora" row="0" col="1"></Label>  
+        </GridLayout>
+    </StackLayout>
+    </StackLayout>
+-->
+    <StackLayout>
+            <Button text="PEDIR CITA" class="btn-pedir_cita" (tap)="pedirCita()"></Button>
+    </StackLayout>
+</StackLayout>

@@ -1,0 +1,48 @@
+.form-input {
+    margin-left: 20;
+    margin-right: 20;
+    margin-top: 15;
+    padding: 10;
+    placeholder-color:rgba(207, 207, 207, 0.6);
+    background-color: rgba(241, 241, 241, 0.6);
+    font-size: 14;
+    margin-bottom: 50px;
+}
+
+.etiqueta{
+    text-align: center;
+    font-size: 16;
+}
+
+.form-button {
+    border-radius: 200;
+    background: linear-gradient(to left, #35d485, #068106);
+    color: white;
+    margin: 20;
+}
+
+.field{
+    margin-left: 20;
+    margin-right: 20;
+    margin-top: 15;
+    padding: 10;
+}
+
+.izquierda{
+    margin-left: 45%;
+}
+
+.bg-white {
+    background-color: #ffffff;
+    color: #777777;
+}
+  
+.text-cancel{
+    color: rgba(26, 158, 81, 0.644);
+}
+
+.etiqueta-modal{
+    font-size: 20;
+    text-align: center;
+    color: rgba(26, 158, 81, 0.644);
+}
